@@ -10,25 +10,34 @@ const { width, stream } = Astro.props;
 <video id="localVideo" playsinline autoplay controls="false" width={width}
 ></video>
 <script>
-  const cameraId = document.querySelector("select#availableCameras").value;
-  const constraints = {
-    // audio: { echoCancellation: true },
-    video: {
-      deviceId: cameraId,
-      // width: { min: minWidth },
-      // height: { min: minHeight },
-    },
-  };
+  async function playVideo(elem: HTMLSelectElement) {
+    const constraints = {
+      // audio: { echoCancellation: true },
+      video: {
+        deviceId: elem.value,
+        // width: { min: minWidth },
+        // height: { min: minHeight },
+      },
+    };
 
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    const videoElement = document.querySelector("video#localVideo");
-    if (videoElement != null) {
-      videoElement.srcObject = stream;
-    } else {
-      console.error("No video element found.");
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      const videoElement = document.querySelector("video#localVideo");
+      if (videoElement != null) {
+        videoElement.srcObject = stream;
+      } else {
+      }
+    } catch (error) {
+      console.error("Error opening video camera.", error);
     }
-  } catch (error) {
-    console.error("Error opening video camera.", error);
+  }
+  const selectElement = document.querySelector("select#availableCameras");
+  if (selectElement == null) {
+    console.error("No video element found.");
+  } else {
+    playVideo(selectElement).then();
+    selectElement.addEventListener("change", (event) => {
+      playVideo(selectElement).then();
+    });
   }
 </script>
