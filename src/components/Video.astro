@@ -1,0 +1,34 @@
+---
+export interface Props {
+  width: number;
+  stream?: MediaStream;
+}
+
+const { width, stream } = Astro.props;
+---
+
+<video id="localVideo" playsinline autoplay controls="false" width={width}
+></video>
+<script>
+  const cameraId = document.querySelector("select#availableCameras").value;
+  const constraints = {
+    // audio: { echoCancellation: true },
+    video: {
+      deviceId: cameraId,
+      // width: { min: minWidth },
+      // height: { min: minHeight },
+    },
+  };
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const videoElement = document.querySelector("video#localVideo");
+    if (videoElement != null) {
+      videoElement.srcObject = stream;
+    } else {
+      console.error("No video element found.");
+    }
+  } catch (error) {
+    console.error("Error opening video camera.", error);
+  }
+</script>

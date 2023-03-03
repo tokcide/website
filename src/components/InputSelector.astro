@@ -1,0 +1,51 @@
+---
+export interface Props {
+  idOfVideo?: string;
+  deviceFilter?: deviceFilterTypes;
+}
+
+enum deviceFilterTypes {
+  VIDEOINPUT = "videoinput",
+  AUDIOINPUT = "audioinput",
+  AUDIOOUTPUT = "audiooutput",
+}
+
+const { deviceFilter = deviceFilterTypes.VIDEOINPUT } = Astro.props;
+
+// server side
+---
+
+<select id="availableCameras" style="width:100px;"></select>
+
+<script define:vars={{ deviceFilter: deviceFilter }}>
+  //client side
+  async function UpdateDevices() {
+    // Fetch an array of devices of a certain type
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const cameras = devices.filter((device) => device.kind === deviceFilter);
+
+    // type: <HTMLSelectElement>
+    const listElement = document.querySelector("select#availableCameras");
+
+    // Updates the select element with the provided set of cameras
+    console.log(listElement);
+    if (listElement != null) {
+      listElement.innerHTML = "";
+      cameras
+        .map((camera, idx) => {
+          const cameraOption = document.createElement("option");
+          cameraOption.label =
+            camera.label === "" ? `Camera ${idx}` : camera.label;
+          cameraOption.value = camera.deviceId;
+          return cameraOption;
+        })
+        .forEach((cameraOption) => listElement.add(cameraOption));
+    }
+    return cameras;
+  }
+  UpdateDevices().then((dev) => console.log(`Found ${dev.length} device/s`));
+  // Listen for changes to media devices and update the list accordingly
+  navigator.mediaDevices.addEventListener("devicechange", (event) => {
+    UpdateDevices().then(() => console.log("Devices updated"));
+  });
+</script>
