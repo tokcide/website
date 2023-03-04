@@ -1,5 +1,5 @@
 {
-  "name": "adorable-antimatter",
+  "name": "cca1",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,6 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^2.0.17"
+    "astro": "^2.0.17",
+    "qrcode": "^1.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.6",
+    "@types/qrcode": "^1.5.0"
   }
 }

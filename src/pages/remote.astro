@@ -1,24 +1,18 @@
 ---
 import Index from "../Index.astro";
+import Video from "../components/Video.astro";
+import InputSelector from "../components/InputSelector.astro";
+import QRcode from "../components/QRcode.astro";
+import Scanner from "../components/Scanner.astro";
 ---
 
-<Index title="Application">
+<!-- desktop -->
+<Index title="Desktop">
   <main>
-    <h1>Welcome to <span class="text-gradient">Astro</span></h1>
-    <!-- <a href="/local">Local</a> | <a href="/remote">Remote</a><br /> -->
-    <p class="instructions">
-      This is our 1st sem CCA project which is a link between a camera module
-      and a display. Project made by Kanishk Chaudhary, Anjanay Mahajan and
-      Bhuvnesh Kumar. <br />
-      These are the routes is
-      <a href="/local"><code>local</code></a>
-      and
-      <a href="/remote"><code>remote</code></a>
-      <br />
-      <strong>THANKYOU</strong>
-    </p>
+    <Video width={541} />
+    <Scanner />
+    <QRcode data="this is cool" />
   </main>
-
   <style is:global>
     main {
       margin: auto;
