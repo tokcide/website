@@ -10,13 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/vercel": "^3.2.0",
+    "@astrojs/netlify": "^2.2.0",
     "amqplib": "^0.10.3",
     "astro": "^2.1.2",
     "npm": "^9.6.1"
   },
   "devDependencies": {
-    "@types/node": "^18.14.6",
-    "@types/amqplib": "^0.10.1"
+    "@types/amqplib": "^0.10.1",
+    "@types/node": "^18.14.6"
   }
 }
