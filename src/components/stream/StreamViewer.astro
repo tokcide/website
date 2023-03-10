@@ -1,15 +1,32 @@
 ---
 export interface Props {
-  width: number;
+  constraints?: MediaStreamConstraints;
   stream?: MediaStream;
 }
-
-const { width } = Astro.props;
 ---
 
-<video id="localVideo" playsinline autoplay controls="false" width={width}
-></video>
+<div class="video-mask">
+  <video
+    hidden
+    id="localVideo"
+    class="container-fluid"
+    width="${window}.width"
+    playsinline
+    disablepictureinpicture
+    autoplay
+    muted
+    controls="false"
+  >
+  </video>
+</div>
+<button id="ask-stream-perms" class="btn btn-primary" type="button"
+  >Ask for permissions</button
+>
+
 <script>
+  const btn = document.querySelector("button#ask-stream-perms");
+  const vid = document.querySelector("video");
+
   async function playVideo(elem: HTMLSelectElement) {
     const constraints = {
       // audio: { echoCancellation: true },
@@ -22,6 +39,7 @@ const { width } = Astro.props;
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
       const videoElement = document.querySelector(
         "video#localVideo"
       ) as HTMLVideoElement | null;
@@ -52,3 +70,10 @@ const { width } = Astro.props;
     });
   }
 </script>
+<style>
+  .video-mask {
+    width: 350px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+</style>

@@ -1,0 +1,10 @@
+---
+export interface Props {
+  index: number;
+}
+
+const { index } = Astro.props;
+---
+
+<canvas data-idx={index}></canvas>
+<script></script>

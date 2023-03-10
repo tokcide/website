@@ -10,11 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^2.0.17",
-    "qrcode": "^1.5.1"
+    "@astrojs/vercel": "^3.2.0",
+    "amqplib": "^0.10.3",
+    "astro": "^2.1.2",
+    "npm": "^9.6.1"
   },
   "devDependencies": {
     "@types/node": "^18.14.6",
-    "@types/qrcode": "^1.5.0"
+    "@types/amqplib": "^0.10.1"
   }
 }
