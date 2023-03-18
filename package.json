@@ -13,9 +13,11 @@
     "@astrojs/netlify": "^2.2.0",
     "amqplib": "^0.10.3",
     "astro": "^2.1.2",
-    "npm": "^9.6.1"
+    "npm": "^9.6.1",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@astrojs/ts-plugin": "^0.4.4",
     "@types/amqplib": "^0.10.1",
     "@types/node": "^18.14.6"
   }

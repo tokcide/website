@@ -14,3 +14,60 @@
   porro? Accusamus soluta dolorem fugit neque autem voluptate asperiores qui
   ipsa, ab exercitationem minus saepe, rem possimus? Sed, voluptatem ut?
 </p>
+<div class="row">
+  <div class="col-4">
+    <div id="list-example" class="list-group">
+      <a class="list-group-item list-group-item-action" href="#list-item-1"
+        >Item 1</a
+      >
+      <a class="list-group-item list-group-item-action" href="#list-item-2"
+        >Item 2</a
+      >
+      <a class="list-group-item list-group-item-action" href="#list-item-3"
+        >Item 3</a
+      >
+      <a class="list-group-item list-group-item-action" href="#list-item-4"
+        >Item 4</a
+      >
+    </div>
+  </div>
+  <div class="col-8">
+    <div
+      data-bs-spy="scroll"
+      data-bs-target="#list-example"
+      data-bs-smooth-scroll="true"
+      class="scrollspy-example"
+      tabindex="0"
+    >
+      <h4 id="list-item-1">Item 1</h4>
+      <p>...</p>
+      <h4 id="list-item-2">Item 2</h4>
+      <p>...</p>
+      <h4 id="list-item-3">Item 3</h4>
+      <p>...</p>
+      <h4 id="list-item-4">Item 4</h4>
+      <p>...</p>
+    </div>
+  </div>
+</div>
+
+<!-- <img class="rounded mx-auto d-block" alt="no image" /> -->
+<button>fetch</button>
+<p id="dataa"></p>
+<script>
+  document.querySelector("button")?.addEventListener("click", (res) => {
+    fetch("/api/queueConsume", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        queueName: "codename",
+        // message: `this is me ${document.querySelector("input")?.value}`,
+      }),
+    }).then(async (res) => {
+      // console.log(res);
+      document.querySelector("p#dataa").innerHTML = await res.text();
+    });
+  });
+</script>

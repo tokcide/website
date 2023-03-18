@@ -2,15 +2,48 @@
 ---
 
 <p>This is local</p>
-<p>
-  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellendus hic quas
-  impedit vel consequatur enim? Dignissimos eligendi consequatur cupiditate amet
-  fugit. Consequatur, hic. Natus porro explicabo eos ducimus voluptates ipsam
-  qui iusto doloribus est eligendi, vitae recusandae dicta officia suscipit at
-  expedita odio aliquid ad quam accusantium sit? Accusantium ipsa voluptatum
-  assumenda quas commodi numquam sed explicabo itaque quidem vel, laborum nobis
-  possimus, ad necessitatibus magnam nesciunt officia? Quia, at aspernatur sunt
-  adipisci modi repudiandae. Aliquid ipsa quam voluptatem maiores in fugiat
-  repellat, numquam magni cumque nesciunt nostrum quo corporis quisquam
-  similique ex distinctio repellendus. Aliquam, similique rem. Ut, asperiores?
-</p>
+
+<!-- <div class="input-group">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Username"
+    aria-label="Ysername with one button addon"
+  />
+  <button class="btn btn-outline-secondary" type="button">Send Offer</button>
+  <button class="btn btn-outline-secondary" type="button">Check Offer</button>
+</div> -->
+<div class="row mb-4 mt-4">
+  <div class="col">
+    <input type="text" class="form-control" />
+  </div>
+  <div class="col-2">
+    <button class="btn btn-primary">Send</button>
+  </div>
+</div>
+<div class="row">
+  <p class="" id="data"></p>
+</div>
+<script>
+  import { LocalConnectionResolver } from "src/lib/connector";
+  // import AMQPwrapper from "src/lib/broker";
+
+  // LocalConnectionResolver;
+  // const c = new AMQPwrapper();
+  document.querySelector("button")?.addEventListener("click", (ev) => {
+    // console.log("asefnalsndkjaneskjd");
+    fetch("/api/queuePublish", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        queueName: "codename",
+        message: `this is me ${document.querySelector("input")?.value}`,
+      }),
+    }).then(async (res) => {
+      // console.log(res);
+      document.querySelector("p#data").innerHTML = await res.text();
+    });
+  });
+</script>

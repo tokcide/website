@@ -2,11 +2,12 @@ import type { APIRoute } from "astro";
 import amqp from "amqplib";
 
 export const post: APIRoute = async ({ request, url }) => {
-  type Good = { queueName: string; message: string };
-  const { queueName, message } = (await request.json()) as Good;
+  type Good = { queueName: string };
+  const { queueName } = (await request.json()) as Good;
 
-  mainnBlock: {
+  {
     let connection: amqp.Connection;
+
     try {
       connection = await amqp.connect(import.meta.env.RABBIT_AMQP);
       const channel = await connection.createChannel();
@@ -15,7 +16,6 @@ export const post: APIRoute = async ({ request, url }) => {
       //     await channel.close();
       //     await connection.close();
       //   });
-
       await channel.assertQueue(queueName, { durable: false });
       await channel.consume(
         queueName,

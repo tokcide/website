@@ -1,13 +1,13 @@
 // import { createClient } from "@redis/client";
 export { LocalConnectionResolver, RemoteConnectionResolver };
 
-// await publisher();
-
 abstract class ConnectionResolver {
-  private readonly configuration = {
+  static readonly configuration = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
-  protected pc: RTCPeerConnection = new RTCPeerConnection(this.configuration);
+  protected pc: RTCPeerConnection = new RTCPeerConnection(
+    ConnectionResolver.configuration
+  );
   constructor(cb: () => {}) {
     // Listen for connectionstatechange on the local RTCPeerConnection
     this.pc.addEventListener("connectionstatechange", (event) => {

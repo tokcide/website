@@ -1,7 +1,7 @@
 ---
-import Connector from "../components/connector/index.astro";
 import BaseLayout from "../components/BaseLayout.astro";
-
+import ButtonFire from "../components/connector/ButtonFire.astro";
+import FiredModal from "../components/connector/FiredModal.astro";
 // const response = await fetch(Astro.url + "queuePublish");
 // const data = await response.json();
 // console.log();
@@ -12,7 +12,8 @@ import BaseLayout from "../components/BaseLayout.astro";
     <div class="row">
       <div class="col"></div>
       <div class="col-2 pt-4">
-        <Connector />
+        <ButtonFire />
+        <FiredModal />
       </div>
     </div>
     <h1>Welcome to <span class="text-gradient">CCA1year Project</span></h1>
