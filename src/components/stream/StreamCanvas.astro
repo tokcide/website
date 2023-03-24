@@ -3,6 +3,9 @@ export interface Props {
   constraints?: MediaStreamConstraints;
   stream?: MediaStream;
 }
+
+const url = import.meta.env.SUPABASE_URL;
+const key = import.meta.env.SUPABASE_KEY;
 ---
 
 <div class="video-mask">
@@ -18,8 +21,12 @@ export interface Props {
   </video>
 </div>
 <video id="remoteVideo" autoplay playsinline></video>
-<button id="ask-stream-perms" class="btn btn-primary" type="button"
-  >Ask for permissions</button
+<button
+  id="ask-stream-perms"
+  class="btn btn-primary"
+  type="button"
+  data-url={url}
+  data-key={key}>Ask for permissions</button
 >
 
 <button id="callButton">call</button>
@@ -32,20 +39,30 @@ export interface Props {
 
 <script>
   // Create a single supabase client for interacting with your database
-  import supabase from "shared/libs/baas";
+  // import supabase from "shared/libs/baas";
+  const webcamButton = document.querySelector<HTMLButtonElement>(
+    "button#ask-stream-perms"
+  );
 
-  import { localStream, remoteStream, pc } from "@store/CCAyear-1";
+  import { createClient } from "@supabase/supabase-js";
+  import servers from "shared/jsons/serverConfig.json";
+  // console.log(webcamButton?.dataset.url);
+  const pc = new RTCPeerConnection(servers);
+  let localStream = new MediaStream();
+  let remoteStream = new MediaStream();
 
-  pc.get().addEventListener("connectionstatechange", (event) => {
-    if (pc.get().connectionState === "connected") {
+  const supabase = createClient(
+    webcamButton?.dataset.url,
+    webcamButton?.dataset.key
+  );
+
+  pc.addEventListener("connectionstatechange", (event) => {
+    if (pc.connectionState === "connected") {
       console.log("CONNECTED!!!!");
       // Peers connected!
     }
   });
 
-  const webcamButton = document.querySelector<HTMLButtonElement>(
-    "button#ask-stream-perms"
-  );
   const webcamVideo =
     document.querySelector<HTMLVideoElement>("video#localVideo");
   const remoteVideo =
@@ -61,28 +78,27 @@ export interface Props {
   const callInput = document.querySelector<HTMLInputElement>("input#callInput");
 
   webcamButton?.addEventListener("click", async () => {
-    localStream.set(
-      await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    );
-    remoteStream.set(new MediaStream());
+    localStream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+
+    remoteStream = new MediaStream();
 
     // Push tracks from local stream to peer connection
-    localStream
-      .get()
-      ?.getTracks()
-      .forEach((track) => {
-        pc.get().addTrack(track, localStream.get());
-      });
+    localStream?.getTracks().forEach((track) => {
+      pc.addTrack(track, localStream);
+    });
 
     // Pull tracks from remote stream, add to video stream
-    pc.get().ontrack = (event) => {
+    pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
-        remoteStream.get().addTrack(track);
+        remoteStream.addTrack(track);
       });
     };
 
-    if (webcamVideo) webcamVideo.srcObject = localStream.get();
-    if (remoteVideo) remoteVideo.srcObject = remoteStream.get();
+    if (webcamVideo) webcamVideo.srcObject = localStream;
+    if (remoteVideo) remoteVideo.srcObject = remoteStream;
 
     if (callButton) callButton.disabled = false;
     if (answerButton) answerButton.disabled = false;
@@ -131,12 +147,17 @@ export interface Props {
   //       });
   //   }
   // });
+
+  callDoc.on("broadcast", { event: "ice" }, async (payload) => {
+    console.log(payload);
+  });
+
   callButton?.addEventListener("click", async () => {
     // program to generate random strings
     if (callInput) callInput.value = Math.random().toString(36).substring(2, 7);
 
     // Get candidates for caller, save to db
-    pc.get().addEventListener("icecandidate", async (event) => {
+    pc.addEventListener("icecandidate", async (event) => {
       alert(event.candidate);
       event.candidate && (await offerCandidates(event.candidate.toJSON()));
     });
@@ -144,8 +165,9 @@ export interface Props {
     // });
     //----------------------------------------------------------------------------------
     // Create offer
-    const offerDescription = await pc.get().createOffer();
-    await pc.get().setLocalDescription(offerDescription);
+    const offerDescription = await pc.createOffer();
+    await pc.setLocalDescription(offerDescription);
+    console.log("this is local", pc.localDescription);
 
     const offer = {
       sdp: offerDescription.sdp,
@@ -155,11 +177,11 @@ export interface Props {
 
     // Listen for remote answer
     callDoc.on("broadcast", { event: "answer" }, async (payload) => {
-      if (!pc.get().currentRemoteDescription)
-        await pc
-          .get()
-          .setRemoteDescription(new RTCSessionDescription(payload.payload));
-      console.log(pc.get().currentRemoteDescription);
+      if (!pc.currentRemoteDescription)
+        await pc.setRemoteDescription(
+          new RTCSessionDescription(payload.payload)
+        );
+      console.log(pc.currentRemoteDescription);
     });
 
     //----------------------------------------------------------------------------------
@@ -167,7 +189,7 @@ export interface Props {
     callDoc.on("broadcast", { event: "ice" }, (payload) => {
       console.log(payload);
       if (payload.answer)
-        pc.get().addIceCandidate(new RTCIceCandidate(payload.answer)).then();
+        pc.addIceCandidate(new RTCIceCandidate(payload.answer)).then();
     });
 
     if (hangupButton) hangupButton.disabled = false;
@@ -177,19 +199,19 @@ export interface Props {
   answerButton?.addEventListener("click", async () => {
     const callId = callInput?.value;
 
-    pc.get().onicecandidate = async (event) => {
+    pc.onicecandidate = async (event) => {
       alert(event.candidate);
       event.candidate && (await answerCandidates(event.candidate.toJSON()));
     };
     //----------------------------------------------------------------------------------
     callDoc.on("broadcast", { event: "offer" }, async (payload) => {
       // console.log(payload.payload);
-      pc.get()
-        .setRemoteDescription(new RTCSessionDescription(payload.payload))
-        .then();
+      pc.setRemoteDescription(
+        new RTCSessionDescription(payload.payload)
+      ).then();
 
-      const answerDescription = await pc.get().createAnswer();
-      await pc.get().setLocalDescription(answerDescription);
+      const answerDescription = await pc.createAnswer();
+      await pc.setLocalDescription(answerDescription);
 
       const answer = {
         type: answerDescription.type,
@@ -205,7 +227,7 @@ export interface Props {
     callDoc.on("broadcast", { event: "ice" }, (payload) => {
       console.log(payload);
       if (payload.offer)
-        pc.get().addIceCandidate(new RTCIceCandidate(payload.offer)).then();
+        pc.addIceCandidate(new RTCIceCandidate(payload.offer)).then();
     });
   });
 </script>
