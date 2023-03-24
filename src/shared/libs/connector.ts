@@ -8,11 +8,11 @@ abstract class ConnectionResolver {
   protected pc: RTCPeerConnection = new RTCPeerConnection(
     ConnectionResolver.configuration
   );
-  constructor(cb: () => {}) {
+  constructor() {
     // Listen for connectionstatechange on the local RTCPeerConnection
     this.pc.addEventListener("connectionstatechange", (event) => {
       if (this.pc.connectionState === "connected") {
-        cb();
+        console.log("CONNECTED!!!!!!!");
         // return true;
       }
     });

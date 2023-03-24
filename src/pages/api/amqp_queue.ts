@@ -1,43 +1,28 @@
 import type { APIRoute } from "astro";
-import AMQPwrapper from "@libs/broker";
+import AMQPwrapper from "shared/libs/broker";
 import { z } from "zod";
-// import { URLSearchParams } from "url";
 
 // ACK MESSAGE
-export const head: APIRoute = async ({ params }) => {
-  const message = params.message;
-  if (message == undefined) {
-    return new Response();
-  }
-  main: {
-    const amqp = new AMQPwrapper();
-    amqp.ackMessage(JSON.parse(message));
-  }
-  return new Response(null, {
-    status: 200,
-  });
+export const head: APIRoute = async ({ url }) => {
+  const main = (message: string) => {
+    AMQPwrapper.fromAmqpUri().then((amqp) =>
+      amqp.ackMessage(JSON.parse(message)).then((amqp) => amqp.close())
+    );
+    return new Response(null, { status: 200 });
+  };
+
+  const message = url.searchParams.get("msg");
+  return message == null ? new Response(null, { status: 400 }) : main(message);
 };
 
 // RECIEVING THE MESSAGE
-export const get: APIRoute = async ({ request, params }) => {
-  // const queue = new URLSearchParams(request.url).get("queue");
-  const queue = params.queue;
-  if (queue == null) {
-    return new Response(null, { status: 400 });
-  }
-
-  main: {
-    const amqp = new AMQPwrapper();
-    const result = await amqp.recieve(queue);
-    if (typeof result === "boolean") {
-      return new Response(null, { status: 400 });
-    } else {
-    }
-    amqp.close();
-    return {
-      body: JSON.stringify(result),
-    };
-  }
+export const get: APIRoute = async ({ url }) => {
+  const queue = url.searchParams.get("queue");
+  const amqp = await AMQPwrapper.fromAmqpUri();
+  const msg = await amqp.recieve(queue ?? "");
+  console.log(msg);
+  amqp.close();
+  return queue == null ? new Response() : new Response();
 };
 
 // SENDING THE MESSAGE
@@ -49,14 +34,10 @@ export const post: APIRoute = async ({ request }) => {
 
   const body = BodySchema.parse(await request.json());
 
-  main: {
-    const amqp = new AMQPwrapper();
-    await amqp.send(body.queue, body.message);
-    amqp.close();
-  }
-  return {
-    body: "sent",
-  };
+  const amqp = await AMQPwrapper.fromAmqpUri();
+  await amqp.send(body.queue, body.message);
+  amqp.close();
+  return new Response("SENT");
 };
 
 export const del: APIRoute = async () => {

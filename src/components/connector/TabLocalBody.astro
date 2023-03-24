@@ -1,49 +1,59 @@
 ---
 ---
 
-<p>This is local</p>
-
-<!-- <div class="input-group">
+<div class="input-group">
   <input
     type="text"
+    id="queueNameLocal"
     class="form-control"
     placeholder="Username"
-    aria-label="Ysername with one button addon"
+    aria-label="Username with one button addon"
   />
-  <button class="btn btn-outline-secondary" type="button">Send Offer</button>
-  <button class="btn btn-outline-secondary" type="button">Check Offer</button>
-</div> -->
-<div class="row mb-4 mt-4">
-  <div class="col">
-    <input type="text" class="form-control" />
-  </div>
-  <div class="col-2">
-    <button class="btn btn-primary">Send</button>
-  </div>
+  <button id="sendOfferBtn" class="btn btn-outline-secondary" type="button"
+    >Send Offer</button
+  >
+  <!-- <button class="btn btn-outline-secondary" type="button">Check Offer</button> -->
 </div>
-<div class="row">
-  <p class="" id="data"></p>
-</div>
-<script>
-  import { LocalConnectionResolver } from "src/lib/connector";
-  // import AMQPwrapper from "src/lib/broker";
+<button class="btn btn-outline-primary m-3" type="button">Recieve Answer</button
+>
 
-  // LocalConnectionResolver;
-  // const c = new AMQPwrapper();
-  document.querySelector("button")?.addEventListener("click", (ev) => {
-    // console.log("asefnalsndkjaneskjd");
-    fetch("/api/queuePublish", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        queueName: "codename",
-        message: `this is me ${document.querySelector("input")?.value}`,
-      }),
-    }).then(async (res) => {
-      // console.log(res);
-      document.querySelector("p#data").innerHTML = await res.text();
+<script>
+  import { queueName } from "@store/CCAyear-1";
+
+  document
+    .querySelector<HTMLInputElement>("input#queueNameLocal")
+    ?.addEventListener("input", (ev) => {
+      queueName.set((ev.target as HTMLInputElement)?.value);
     });
+
+  queueName.subscribe((value) => {
+    const textInput = document.querySelector<HTMLInputElement>(
+      "input#queueNameLocal"
+    );
+    if (textInput != null) {
+      textInput.value = value;
+    }
   });
+
+  import { LocalConnectionResolver } from "shared/libs/connector";
+  document
+    .querySelector("button#sendOfferBtn")
+    ?.addEventListener("click", async (ev) => {
+      const LCR = new LocalConnectionResolver();
+      LCR.dispatchOffer()
+        .then((offer) =>
+          fetch("/api/amqp_queue", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              queue: queueName.get(),
+              message: offer,
+            }),
+          })
+        )
+        .then((response) => response.text)
+        .then((txt) => console.log(txt));
+    });
 </script>

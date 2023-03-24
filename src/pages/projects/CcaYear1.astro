@@ -1,0 +1,29 @@
+---
+import BaseLayout from "components/BaseLayout.astro";
+import ModalFireButton from "components/connector/ModalFireButton.astro";
+import StreamCanvas from "components/stream/StreamCanvas.astro";
+import StreamSelector from "components/stream/StreamSelector.astro";
+---
+
+<BaseLayout title="Application">
+  <div class="container">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-2 pt-4">
+        <ModalFireButton />
+      </div>
+    </div>
+    <h1>Welcome to <span class="text-gradient">CCA1year Project</span></h1>
+    <StreamSelector />
+    <StreamCanvas />
+    <footer>
+      <p class="instructions">
+        This is our 1st sem CCA project which is a link between a camera module
+        and a display. Project made by Kanishk Chaudhary, Anjnay Mahajan and
+        Bhuvnesh Kumar. <br />
+        <br />
+        <strong>THANKYOU</strong>
+      </p>
+    </footer>
+  </div>
+</BaseLayout>

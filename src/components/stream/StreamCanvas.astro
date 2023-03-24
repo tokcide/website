@@ -1,10 +1,218 @@
 ---
 export interface Props {
-  index: number;
+  constraints?: MediaStreamConstraints;
+  stream?: MediaStream;
 }
-
-const { index } = Astro.props;
 ---
 
-<canvas data-idx={index}></canvas>
-<script></script>
+<div class="video-mask">
+  <video
+    hidden
+    id="localVideo"
+    class="container-fluid"
+    width="${window}.width"
+    playsinline
+    autoplay
+    controls="false"
+  >
+  </video>
+</div>
+<video id="remoteVideo" autoplay playsinline></video>
+<button id="ask-stream-perms" class="btn btn-primary" type="button"
+  >Ask for permissions</button
+>
+
+<button id="callButton">call</button>
+<button id="answerButton">answer</button>
+
+<button id="hangupButton">hangup</button>
+<input type="text" id="callInput" />
+
+<!-- <script src="https://unpkg.com/@supabase/supabase-js@2"></script> -->
+
+<script>
+  // Create a single supabase client for interacting with your database
+  import supabase from "shared/libs/baas";
+
+  import { localStream, remoteStream, pc } from "@store/CCAyear-1";
+
+  pc.get().addEventListener("connectionstatechange", (event) => {
+    if (pc.get().connectionState === "connected") {
+      console.log("CONNECTED!!!!");
+      // Peers connected!
+    }
+  });
+
+  const webcamButton = document.querySelector<HTMLButtonElement>(
+    "button#ask-stream-perms"
+  );
+  const webcamVideo =
+    document.querySelector<HTMLVideoElement>("video#localVideo");
+  const remoteVideo =
+    document.querySelector<HTMLVideoElement>("video#remoteVideo");
+  const callButton =
+    document.querySelector<HTMLButtonElement>("button#callButton");
+  const answerButton = document.querySelector<HTMLButtonElement>(
+    "button#answerButton"
+  );
+  const hangupButton = document.querySelector<HTMLButtonElement>(
+    "button#hangupButton"
+  );
+  const callInput = document.querySelector<HTMLInputElement>("input#callInput");
+
+  webcamButton?.addEventListener("click", async () => {
+    localStream.set(
+      await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    );
+    remoteStream.set(new MediaStream());
+
+    // Push tracks from local stream to peer connection
+    localStream
+      .get()
+      ?.getTracks()
+      .forEach((track) => {
+        pc.get().addTrack(track, localStream.get());
+      });
+
+    // Pull tracks from remote stream, add to video stream
+    pc.get().ontrack = (event) => {
+      event.streams[0].getTracks().forEach((track) => {
+        remoteStream.get().addTrack(track);
+      });
+    };
+
+    if (webcamVideo) webcamVideo.srcObject = localStream.get();
+    if (remoteVideo) remoteVideo.srcObject = remoteStream.get();
+
+    if (callButton) callButton.disabled = false;
+    if (answerButton) answerButton.disabled = false;
+    webcamButton.disabled = true;
+  });
+  await supabase.removeAllChannels();
+
+  const callDoc = supabase
+    .channel("calls", {
+      config: { broadcast: { self: true, ack: true } },
+    })
+    .subscribe((status) => console.log(status));
+  const offerCandidates = (msg: object) =>
+    callDoc.send({
+      type: "broadcast",
+      event: "ice",
+      payload: { offer: msg },
+    });
+  const answerCandidates = (msg: object) =>
+    callDoc.send({
+      type: "broadcast",
+      event: "ice",
+      payload: { answer: msg },
+    });
+
+  // Reference Firestore collections for signaling
+  // console.log(supabase.getChannels());
+  // const channel = supabase.channel("sadAF", {
+  //   config: { broadcast: { self: true, ack: true } },
+  // });
+  // channel.on("broadcast", { event: "offer" }, (payload) => {
+  //   console.log("recieved", payload);
+  // });
+  // channel.subscribe((status) => {
+  //   console.log(status);
+  //   if (status === "SUBSCRIBED") {
+  //     channel
+  //       .send({
+  //         type: "broadcast",
+  //         event: "offer",
+  //         payload: { x: Math.random(), y: Math.random() },
+  //       })
+  //       .then((status) => {
+  //         if (status === "ok") console.log("ok");
+  //         if (status === "timed out") console.log("timed out");
+  //       });
+  //   }
+  // });
+  callButton?.addEventListener("click", async () => {
+    // program to generate random strings
+    if (callInput) callInput.value = Math.random().toString(36).substring(2, 7);
+
+    // Get candidates for caller, save to db
+    pc.get().addEventListener("icecandidate", async (event) => {
+      alert(event.candidate);
+      event.candidate && (await offerCandidates(event.candidate.toJSON()));
+    });
+    // event.candidate && (await offerCandidates(event.candidate.toJSON()));
+    // });
+    //----------------------------------------------------------------------------------
+    // Create offer
+    const offerDescription = await pc.get().createOffer();
+    await pc.get().setLocalDescription(offerDescription);
+
+    const offer = {
+      sdp: offerDescription.sdp,
+      type: offerDescription.type,
+    };
+    callDoc.send({ type: "broadcast", event: "offer", payload: offer }).then();
+
+    // Listen for remote answer
+    callDoc.on("broadcast", { event: "answer" }, async (payload) => {
+      if (!pc.get().currentRemoteDescription)
+        await pc
+          .get()
+          .setRemoteDescription(new RTCSessionDescription(payload.payload));
+      console.log(pc.get().currentRemoteDescription);
+    });
+
+    //----------------------------------------------------------------------------------
+    // When answered, add candidate to peer connection
+    callDoc.on("broadcast", { event: "ice" }, (payload) => {
+      console.log(payload);
+      if (payload.answer)
+        pc.get().addIceCandidate(new RTCIceCandidate(payload.answer)).then();
+    });
+
+    if (hangupButton) hangupButton.disabled = false;
+  });
+
+  // 3. Answer the call with the unique ID
+  answerButton?.addEventListener("click", async () => {
+    const callId = callInput?.value;
+
+    pc.get().onicecandidate = async (event) => {
+      alert(event.candidate);
+      event.candidate && (await answerCandidates(event.candidate.toJSON()));
+    };
+    //----------------------------------------------------------------------------------
+    callDoc.on("broadcast", { event: "offer" }, async (payload) => {
+      // console.log(payload.payload);
+      pc.get()
+        .setRemoteDescription(new RTCSessionDescription(payload.payload))
+        .then();
+
+      const answerDescription = await pc.get().createAnswer();
+      await pc.get().setLocalDescription(answerDescription);
+
+      const answer = {
+        type: answerDescription.type,
+        sdp: answerDescription.sdp,
+      };
+      callDoc
+        .send({ type: "broadcast", event: "answer", payload: answer })
+        .then();
+    });
+
+    //----------------------------------------------------------------------------------
+
+    callDoc.on("broadcast", { event: "ice" }, (payload) => {
+      console.log(payload);
+      if (payload.offer)
+        pc.get().addIceCandidate(new RTCIceCandidate(payload.offer)).then();
+    });
+  });
+</script>
+<style>
+  .video-mask {
+    width: 350px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+</style>

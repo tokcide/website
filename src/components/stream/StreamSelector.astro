@@ -12,7 +12,11 @@ enum deviceFilterTypes {
 const { deviceFilter = deviceFilterTypes.VIDEOINPUT } = Astro.props;
 ---
 
-<select id="cameraSelector" class="form-select" data-filter={deviceFilter}>
+<select
+  id="cameraSelector"
+  class="form-select form-select-sm"
+  data-filter={deviceFilter}
+>
 </select>
 
 <script>

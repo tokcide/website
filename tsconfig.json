@@ -4,8 +4,10 @@
     "importsNotUsedAsValues": "error",
     "baseUrl": "src",
     "paths": {
-      "@libs/*": ["lib/*"]
-    }
+      "@store/*": ["store/store/*"]
+    },
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
   },
   "plugins": {
     "name": "@astrojs/ts-plugin"
