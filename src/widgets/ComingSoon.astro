@@ -1,16 +1,15 @@
 ---
+export interface Props {
+  mainText: string;
+}
+
+const { mainText } = Astro.props;
 ---
 
 <div class="d-flex flex-column justify-content-center w-100 h-100">
   <div class="d-flex flex-column justify-content-center align-items-center">
-    <h1 class="fw-light text-white m-0">. . . Coming soon . . .</h1>
+    <h1 class="fw-light text-white m-0">{mainText}</h1>
     <div class="btn-group my-5">
-      <a
-        href="https://codepen-api-export-production.s3.us-west-2.amazonaws.com/zip/PEN/pyBNzX/1578778289271/pure-css-gradient-background-animation.zip"
-        class="btn btn-outline-light"
-        aria-current="page"
-        ><i class="fas fa-file-download me-2"></i> SOURCE CODE</a
-      >
       <a href="/projects/cca-year-1" class="btn btn-outline-light"
         >CCA <i class="fas fa-expand ms-2"></i></a
       >
