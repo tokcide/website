@@ -9,8 +9,8 @@ const key = import.meta.env.SUPABASE_KEY;
 ---
 
 <div class="video-mask">
+  <!-- hidden -->
   <video
-    hidden
     id="localVideo"
     class="container-fluid"
     width="${window}.width"
@@ -45,9 +45,20 @@ const key = import.meta.env.SUPABASE_KEY;
   );
 
   import { createClient } from "@supabase/supabase-js";
-  import servers from "shared/jsons/serverConfig.json";
   // console.log(webcamButton?.dataset.url);
-  const pc = new RTCPeerConnection(servers);
+  const urls: string[] = await fetch(
+    "https://raw.githubusercontent.com/pradt2/always-online-stun/master/valid_hosts.txt"
+  )
+    .then((response) => response.text())
+    .then((txt) => txt.split("\n"))
+    .then((strArray) =>
+      strArray
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 2)
+        .map((value) => "stun:" + decodeURI(value))
+    );
+
+  const pc = new RTCPeerConnection({ iceServers: [{ urls: urls }] });
   let localStream = new MediaStream();
   let remoteStream = new MediaStream();
 
@@ -63,7 +74,7 @@ const key = import.meta.env.SUPABASE_KEY;
     }
   });
 
-  const webcamVideo =
+  const localVideo =
     document.querySelector<HTMLVideoElement>("video#localVideo");
   const remoteVideo =
     document.querySelector<HTMLVideoElement>("video#remoteVideo");
@@ -80,7 +91,7 @@ const key = import.meta.env.SUPABASE_KEY;
   webcamButton?.addEventListener("click", async () => {
     localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
-      audio: true,
+      // audio: true,
     });
 
     remoteStream = new MediaStream();
@@ -97,7 +108,7 @@ const key = import.meta.env.SUPABASE_KEY;
       });
     };
 
-    if (webcamVideo) webcamVideo.srcObject = localStream;
+    if (localVideo) localVideo.srcObject = localStream;
     if (remoteVideo) remoteVideo.srcObject = remoteStream;
 
     if (callButton) callButton.disabled = false;
@@ -148,48 +159,57 @@ const key = import.meta.env.SUPABASE_KEY;
   //   }
   // });
 
-  callDoc.on("broadcast", { event: "ice" }, async (payload) => {
-    console.log(payload);
-  });
-
   callButton?.addEventListener("click", async () => {
     // program to generate random strings
-    if (callInput) callInput.value = Math.random().toString(36).substring(2, 7);
-
+    if (callInput && !callInput.value)
+      callInput.value = Math.random().toString(36).substring(2, 7);
     // Get candidates for caller, save to db
-    pc.addEventListener("icecandidate", async (event) => {
-      alert(event.candidate);
-      event.candidate && (await offerCandidates(event.candidate.toJSON()));
+    pc.addEventListener("icecandidate", (event) => {
+      event.candidate &&
+        offerCandidates({
+          user: callInput?.value,
+          data: event.candidate.toJSON(),
+        }).then();
     });
-    // event.candidate && (await offerCandidates(event.candidate.toJSON()));
-    // });
     //----------------------------------------------------------------------------------
     // Create offer
     const offerDescription = await pc.createOffer();
     await pc.setLocalDescription(offerDescription);
-    console.log("this is local", pc.localDescription);
 
     const offer = {
       sdp: offerDescription.sdp,
       type: offerDescription.type,
     };
-    callDoc.send({ type: "broadcast", event: "offer", payload: offer }).then();
+    callDoc
+      .send({
+        type: "broadcast",
+        event: "offer",
+        payload: { user: callInput?.value, data: offer },
+      })
+      .then();
 
     // Listen for remote answer
     callDoc.on("broadcast", { event: "answer" }, async (payload) => {
-      if (!pc.currentRemoteDescription)
+      if (
+        !pc.currentRemoteDescription &&
+        callInput?.value === payload.payload.user
+      )
         await pc.setRemoteDescription(
-          new RTCSessionDescription(payload.payload)
+          new RTCSessionDescription(payload.payload.data)
         );
-      console.log(pc.currentRemoteDescription);
     });
 
     //----------------------------------------------------------------------------------
     // When answered, add candidate to peer connection
     callDoc.on("broadcast", { event: "ice" }, (payload) => {
-      console.log(payload);
-      if (payload.answer)
-        pc.addIceCandidate(new RTCIceCandidate(payload.answer)).then();
+      if (payload.answer) {
+        console.log("payload.answer", payload.answer);
+        console.log("payload.answer.user", payload.answer.user);
+        console.log("payload.payload.answer", payload.payload.answer);
+        console.log("payload.payload.answer.user", payload.payload.answer.user);
+      }
+      if (payload.answer && payload.answer.user === callInput?.value)
+        pc.addIceCandidate(new RTCIceCandidate(payload.answer.data)).then();
     });
 
     if (hangupButton) hangupButton.disabled = false;
@@ -197,18 +217,21 @@ const key = import.meta.env.SUPABASE_KEY;
 
   // 3. Answer the call with the unique ID
   answerButton?.addEventListener("click", async () => {
-    const callId = callInput?.value;
+    // const callId = callInput?.value;
 
     pc.onicecandidate = async (event) => {
-      alert(event.candidate);
-      event.candidate && (await answerCandidates(event.candidate.toJSON()));
+      event.candidate &&
+        (await answerCandidates({
+          user: callInput?.value,
+          data: event.candidate.toJSON(),
+        }));
     };
     //----------------------------------------------------------------------------------
     callDoc.on("broadcast", { event: "offer" }, async (payload) => {
-      // console.log(payload.payload);
-      pc.setRemoteDescription(
-        new RTCSessionDescription(payload.payload)
-      ).then();
+      if (payload.payload.user === callInput?.value)
+        pc.setRemoteDescription(
+          new RTCSessionDescription(payload.payload.data)
+        ).then();
 
       const answerDescription = await pc.createAnswer();
       await pc.setLocalDescription(answerDescription);
@@ -218,16 +241,19 @@ const key = import.meta.env.SUPABASE_KEY;
         sdp: answerDescription.sdp,
       };
       callDoc
-        .send({ type: "broadcast", event: "answer", payload: answer })
+        .send({
+          type: "broadcast",
+          event: "answer",
+          payload: { user: callInput?.value, data: answer },
+        })
         .then();
     });
 
     //----------------------------------------------------------------------------------
 
     callDoc.on("broadcast", { event: "ice" }, (payload) => {
-      console.log(payload);
-      if (payload.offer)
-        pc.addIceCandidate(new RTCIceCandidate(payload.offer)).then();
+      if (payload.offer && payload.user === callInput?.value)
+        pc.addIceCandidate(new RTCIceCandidate(payload.offer.data)).then();
     });
   });
 </script>
