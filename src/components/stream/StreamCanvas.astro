@@ -9,31 +9,46 @@ const key = import.meta.env.SUPABASE_KEY;
 ---
 
 <div class="video-mask">
-  <!-- hidden -->
-  <video
-    id="localVideo"
-    class="container-fluid"
-    width="${window}.width"
-    playsinline
-    autoplay
-    controls="false"
-  >
-  </video>
+  <div class="row">
+    <video
+      class="col-6 rounded"
+      id="localVideo"
+      playsinline
+      autoplay
+      controls="false"
+    >
+    </video>
+    <video
+      class="col-6 rounded"
+      id="remoteVideo"
+      autoplay
+      playsinline
+      controls="false"></video>
+  </div>
 </div>
-<video id="remoteVideo" autoplay playsinline></video>
-<button
-  id="ask-stream-perms"
-  class="btn btn-primary"
-  type="button"
-  data-url={url}
-  data-key={key}>Ask for permissions</button
->
+<div class="input-group mb-3">
+  <button
+    id="ask-stream-perms"
+    class="btn btn-outline-primary"
+    type="button"
+    data-url={url}
+    data-key={key}>Ask for permissions</button
+  >
+  <input
+    class="form-control"
+    placeholder="User code"
+    type="text"
+    id="callInput"
+  />
 
-<button id="callButton">call</button>
-<button id="answerButton">answer</button>
-
-<button id="hangupButton">hangup</button>
-<input type="text" id="callInput" />
+  <button class="btn btn-outline-success" id="callButton"
+    >Send Call Request</button
+  >
+  <button class="btn btn-outline-success" id="answerButton"
+    >Accept Call Request</button
+  >
+  <button class="btn btn-outline-danger" id="hangupButton">HangUp</button>
+</div>
 
 <!-- <script src="https://unpkg.com/@supabase/supabase-js@2"></script> -->
 
@@ -241,10 +256,10 @@ const key = import.meta.env.SUPABASE_KEY;
     });
   });
 </script>
-<style>
+<!-- <style>
   .video-mask {
     width: 350px;
     border-radius: 10px;
     overflow: hidden;
   }
-</style>
+</style> -->
