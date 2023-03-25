@@ -48,6 +48,8 @@ const key = import.meta.env.SUPABASE_KEY;
   // console.log(webcamButton?.dataset.url);
   const urls: string[] = await fetch(
     "https://raw.githubusercontent.com/pradt2/always-online-stun/master/valid_hosts.txt"
+    // "https://raw.githubusercontent.com/pradt2/always-online-stun/master/valid_ipv4s.txt"
+    // "https://raw.githubusercontent.com/pradt2/always-online-stun/master/valid_ipv6s.txt"
   )
     .then((response) => response.text())
     .then((txt) => txt.split("\n"))
@@ -135,36 +137,13 @@ const key = import.meta.env.SUPABASE_KEY;
       payload: { answer: msg },
     });
 
-  // Reference Firestore collections for signaling
-  // console.log(supabase.getChannels());
-  // const channel = supabase.channel("sadAF", {
-  //   config: { broadcast: { self: true, ack: true } },
-  // });
-  // channel.on("broadcast", { event: "offer" }, (payload) => {
-  //   console.log("recieved", payload);
-  // });
-  // channel.subscribe((status) => {
-  //   console.log(status);
-  //   if (status === "SUBSCRIBED") {
-  //     channel
-  //       .send({
-  //         type: "broadcast",
-  //         event: "offer",
-  //         payload: { x: Math.random(), y: Math.random() },
-  //       })
-  //       .then((status) => {
-  //         if (status === "ok") console.log("ok");
-  //         if (status === "timed out") console.log("timed out");
-  //       });
-  //   }
-  // });
-
   callButton?.addEventListener("click", async () => {
     // program to generate random strings
     if (callInput && !callInput.value)
       callInput.value = Math.random().toString(36).substring(2, 7);
     // Get candidates for caller, save to db
     pc.addEventListener("icecandidate", (event) => {
+      console.log(event.candidate);
       event.candidate &&
         offerCandidates({
           user: callInput?.value,
@@ -202,14 +181,13 @@ const key = import.meta.env.SUPABASE_KEY;
     //----------------------------------------------------------------------------------
     // When answered, add candidate to peer connection
     callDoc.on("broadcast", { event: "ice" }, (payload) => {
-      if (payload.answer) {
-        console.log("payload.answer", payload.answer);
-        console.log("payload.answer.user", payload.answer.user);
-        console.log("payload.payload.answer", payload.payload.answer);
-        console.log("payload.payload.answer.user", payload.payload.answer.user);
-      }
-      if (payload.answer && payload.answer.user === callInput?.value)
-        pc.addIceCandidate(new RTCIceCandidate(payload.answer.data)).then();
+      if (
+        payload.payload.answer &&
+        payload.payload.answer.user === callInput?.value
+      )
+        pc.addIceCandidate(
+          new RTCIceCandidate(payload.payload.answer.data)
+        ).then();
     });
 
     if (hangupButton) hangupButton.disabled = false;
@@ -219,13 +197,14 @@ const key = import.meta.env.SUPABASE_KEY;
   answerButton?.addEventListener("click", async () => {
     // const callId = callInput?.value;
 
-    pc.onicecandidate = async (event) => {
+    pc.addEventListener("icecandidate", async (event) => {
+      console.log(event.candidate);
       event.candidate &&
         (await answerCandidates({
           user: callInput?.value,
           data: event.candidate.toJSON(),
         }));
-    };
+    });
     //----------------------------------------------------------------------------------
     callDoc.on("broadcast", { event: "offer" }, async (payload) => {
       if (payload.payload.user === callInput?.value)
@@ -252,8 +231,13 @@ const key = import.meta.env.SUPABASE_KEY;
     //----------------------------------------------------------------------------------
 
     callDoc.on("broadcast", { event: "ice" }, (payload) => {
-      if (payload.offer && payload.user === callInput?.value)
-        pc.addIceCandidate(new RTCIceCandidate(payload.offer.data)).then();
+      if (
+        payload.payload.offer &&
+        payload.payload.offer.user === callInput?.value
+      )
+        pc.addIceCandidate(
+          new RTCIceCandidate(payload.payload.offer.data)
+        ).then();
     });
   });
 </script>
