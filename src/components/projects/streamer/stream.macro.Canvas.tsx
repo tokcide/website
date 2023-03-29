@@ -13,13 +13,15 @@ export const App: Component<Props> = (props) => {
   const getLocalStream = useStore(localStream);
   const getRemoteStream = useStore(remoteStream);
   createEffect(() => {
-    if (localVideo.srcObject) {
-      localVideo.pause();
-      localVideo.srcObject = null;
+    // if (localVideo.srcObject) {
+    localVideo.pause();
+    localVideo.srcObject = null;
+    // }
+    if (getLocalStream()) {
+      localVideo.srcObject = getLocalStream();
+      localVideo.load();
+      localVideo.play();
     }
-    localVideo.srcObject = getLocalStream();
-    localVideo.load();
-    localVideo.play();
   });
   createEffect(() => (remoteVideo.srcObject = getRemoteStream()));
 
@@ -30,17 +32,17 @@ export const App: Component<Props> = (props) => {
           ref={localVideo}
           class="col-6 rounded"
           id="localVideo"
-          // playsinline
           autoplay
-          // controls={false}
+          playsinline
+          controls={false}
         ></video>
         <video
           ref={remoteVideo}
           class="col-6 rounded"
           id="remoteVideo"
           autoplay
-          // playsinline
-          // controls={false}
+          playsinline
+          controls={false}
         ></video>
       </div>
     </>
