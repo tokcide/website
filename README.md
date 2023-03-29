@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/dc211944-a755-4690-868f-f1549254266a/deploy-status)](https://app.netlify.com/sites/tokcide/deploys)
+
 [![pnpm](https://img.shields.io/badge/pnpm-docs-informational?style=flat-square&logo=pnpm)](https://pnpm.io/pnpm-cli)
 [![vite](https://img.shields.io/badge/vite-docs-informational?style=flat-square&logo=vite)](https://vitejs.dev/guide/)
 [![astro](https://img.shields.io/badge/astro-docs-informational?style=flat-square&logo=astro)](https://docs.astro.build/en/core-concepts/astro-syntax/)
