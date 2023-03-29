@@ -1,0 +1,90 @@
+---
+import BaseLayout from "components/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Tik-tak-toe"
+  config={{ bootstrap: false, bootstrapJs: false }}
+>
+  <div class="board" id="board">
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+  </div>
+  <div class="winning-message">
+    <div data-winngin-message-text></div>
+    <button id="restartButton">Restart</button>
+  </div>
+</BaseLayout>
+<script></script>
+<style>
+  *,
+  *::after,
+  *::before {
+    box-sizing: border-box;
+  }
+  :root {
+    --cell-size: 100px;
+    --mark-size: calc(var(var(--cell-size)) * 0.9);
+  }
+  body {
+    margin: 0;
+  }
+  .board {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(3, auto);
+  }
+  .cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    position: relative;
+  }
+  .cell:first-child,
+  .cell:nth-child(2),
+  .cell:nth-child(3) {
+    border-top: none;
+  }
+  .cell:last-child,
+  .cell:nth-child(7),
+  .cell:nth-child(8) {
+    border-bottom: none;
+  }
+
+  .cell:nth-child(3n + 1) {
+    border-left: none;
+  }
+
+  .cell:nth-child(3n + 3) {
+    border-right: none;
+  }
+  .cell.x::before,
+  .cell.x::after {
+    content: "";
+    position: absolute;
+    width: calc(var(--mark-size) * 0.15);
+    height: var(--mark-size);
+    background-color: black;
+  }
+  .cell.x::before {
+    transform: rotate(45deg);
+  }
+  .cell.x::after {
+    transform: rotate(-45deg);
+  }
+</style>

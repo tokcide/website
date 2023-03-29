@@ -1,0 +1,57 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"select"> {}
+
+const { ...attrs }: Props = Astro.props;
+---
+
+<select id="cameraSelector" class="form-select form-select-sm" {...attrs}
+></select>
+<input type="checkbox" class="btn-check" id="audioToggle" />
+<label class="btn btn-outline-primary" for="audioToggle">Audio</label>
+
+<script>
+  import { localStream } from "./stream.state";
+
+  const updateOptions = (
+    elem: HTMLSelectElement | null,
+    alias: string = "Camera",
+    constraint: string = "videoinput"
+  ) => {
+    navigator.mediaDevices
+      .enumerateDevices()
+      .then((devices) => devices.filter((device) => device.kind === constraint))
+      .then((devices) =>
+        devices.map((camera, index) => {
+          const option = document.createElement("option");
+          option.value = camera.deviceId;
+          option.label =
+            camera.label === "" ? `${alias} ${index}` : camera.label;
+          option.selected = index === 0 ? true : false;
+          option.innerHTML = camera.label;
+          return option;
+        })
+      )
+      .then((elems) => elem?.replaceChildren(...elems));
+  };
+
+  const [select, check] = [
+    document.querySelector<HTMLSelectElement>("select#cameraSelector"),
+    document.querySelector<HTMLInputElement>("input#audioToggle"),
+  ];
+  const updateStream = async (ev: Event) =>
+    localStream.set(
+      await navigator.mediaDevices.getUserMedia({
+        video: { deviceId: select?.value },
+        audio: check?.checked,
+      })
+    );
+
+  select?.addEventListener("change", updateStream);
+  check?.addEventListener("change", updateStream);
+  updateOptions(select);
+  navigator.mediaDevices.addEventListener("devicechange", (event) =>
+    updateOptions(select)
+  );
+</script>

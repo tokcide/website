@@ -1,8 +1,10 @@
 ---
 import BaseLayout from "components/BaseLayout.astro";
-import ComingSoon from "widgets/ComingSoon.astro";
+import ComingSoon from "components/ComingSoon.widget.astro";
+
+const baseConfig = { bootstrap: true };
 ---
 
-<BaseLayout title="Home">
+<BaseLayout title="Home" config={{ ...baseConfig, bootstrapJs: false }}>
   <ComingSoon mainText=". . . Coming Soon . . ." />
 </BaseLayout>

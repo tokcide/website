@@ -13,21 +13,22 @@
     "@astrojs/netlify": "^2.2.0",
     "@astrojs/sitemap": "^1.2.1",
     "@astrojs/solid-js": "^2.1.0",
-    "@astrojs/vercel": "^3.2.1",
+    "@nanostores/solid": "^0.3.2",
     "@supabase/supabase-js": "^2.12.1",
     "@tanstack/solid-query": "^4.27.0",
-    "@trpc/client": "^10.17.0",
-    "@trpc/server": "^10.17.0",
+    "@trpc/client": "^10.18.0",
+    "@trpc/server": "^10.18.0",
     "amqplib": "^0.10.3",
-    "astro": "^2.1.5",
+    "astro": "^2.1.7",
     "nanostores": "^0.7.4",
-    "npm": "^9.6.1",
-    "solid-js": "^1.4.3",
+    "npm": "^9.6.2",
+    "solid-js": "^1.6.15",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@astrojs/ts-plugin": "^0.4.4",
+    "@babel/core": "^7.21.3",
     "@types/amqplib": "^0.10.1",
-    "@types/node": "^18.14.6"
+    "@types/node": "^18.15.9"
   }
 }

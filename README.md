@@ -1,3 +1,17 @@
+[![pnpm](https://img.shields.io/badge/pnpm-docs-informational?style=flat-square&logo=pnpm)](https://pnpm.io/pnpm-cli)
+[![vite](https://img.shields.io/badge/vite-docs-informational?style=flat-square&logo=vite)](https://vitejs.dev/guide/)
+[![astro](https://img.shields.io/badge/astro-docs-informational?style=flat-square&logo=astro)](https://docs.astro.build/en/core-concepts/astro-syntax/)
+[![trpc](https://img.shields.io/badge/trpc-docs-informational?style=flat-square&logo=trpc)](https://trpc.io/docs)
+[![solid](https://img.shields.io/badge/solid-docs-informational?style=flat-square&logo=solid)](https://www.solidjs.com/docs/latest)
+[![supabase](https://img.shields.io/badge/supabase-docs-informational?style=flat-square&logo=supabase)](https://supabase.com/docs)
+[![netlify](https://img.shields.io/badge/netlify-docs-informational?style=flat-square&logo=netlify)](https://app.netlify.com/)
+[![zod](https://img.shields.io/badge/zod-docs-informational?style=flat-square&logo=zod)](https://zod.dev/)
+[![nanostores](https://img.shields.io/badge/nanostores-docs-informational?style=flat-square&logo=nanostores)](https://zod.dev/)
+
+[![nanostores](https://img.shields.io/github/stars/nanostores/nanostores?label=nanostores&logo=github&logoColor=black&style=social)](https://github.com/nanostores/nanostores)
+
+[![simple-icons](https://img.shields.io/github/stars/simple-icons/simple-icons?label=simple-icons&style=for-the-badge)](https://github.com/simple-icons/simple-icons/blob/develop/slugs.md)
+
 # Astro Starter Kit: Basics
 
 ```
@@ -11,7 +25,6 @@ npm create astro@latest -- --template basics
 > 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
 ![basics](https://user-images.githubusercontent.com/4677417/186188965-73453154-fdec-4d6b-9c34-cb35c248ae5b.png)
-
 
 ## 🚀 Project Structure
 
@@ -41,14 +54,14 @@ Any static assets, like images, can be placed in the `public/` directory.
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `npm install`          | Installs dependencies                            |
-| `npm run dev`          | Starts local dev server at `localhost:3000`      |
-| `npm run build`        | Build your production site to `./dist/`          |
-| `npm run preview`      | Preview your build locally, before deploying     |
-| `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro --help` | Get help using the Astro CLI                     |
+| Command                 | Action                                           |
+| :---------------------- | :----------------------------------------------- |
+| `pnpm install`          | Installs dependencies                            |
+| `pnpm run dev`          | Starts local dev server at `localhost:3000`      |
+| `pnpm run build`        | Build your production site to `./dist/`          |
+| `pnpm run preview`      | Preview your build locally, before deploying     |
+| `pnpm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
+| `pnpm run astro --help` | Get help using the Astro CLI                     |
 
 ## 👀 Want to learn more?
 
