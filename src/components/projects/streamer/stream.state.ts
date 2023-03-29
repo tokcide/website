@@ -8,3 +8,4 @@ export const usercode = atom<string>("");
 
 export const wrtc = atom<WebRTC | null>(null);
 export const sp = atom<SupabaseClient | null>(null);
+localStream.subscribe((value) => console.log("localstream was changed", value));

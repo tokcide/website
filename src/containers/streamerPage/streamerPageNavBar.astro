@@ -1,12 +1,14 @@
 ---
-import StreamSelector from "components/projects/streamer/stream.macro.Selector.astro";
-import { Call } from "components/projects/streamer/buttons";
-import { App as Selec } from "components/projects/streamer/stream.macro.Selector";
+// import StreamSelector from "components/projects/streamer/stream.macro.Selector.astro";
+// import { Call } from "components/projects/streamer/buttons";
+import { App as Select } from "components/projects/streamer/stream.macro.Selector";
+import { App as Canvas } from "components/projects/streamer/stream.macro.Canvas";
 ---
 
 <div>
   <!-- <StreamSelector /> -->
-  <Call client:visible text="this" />
-  <Selec client:visible class="form-select form-select-sm" />
+  <!-- <Call client:visible /> -->
+  <Select client:visible class="form-select form-select-sm" />
+  <Canvas client:visible />
 </div>
 <script></script>

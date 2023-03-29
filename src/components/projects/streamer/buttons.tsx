@@ -3,13 +3,27 @@ import { createEffect, createSignal } from "solid-js";
 import type { JSX, Component } from "solid-js";
 import { isServer } from "solid-js/web";
 import { useStore } from "@nanostores/solid";
-import { wrtc, sp } from "components/projects/streamer/stream.state";
+import {
+  wrtc,
+  sp,
+  localStream,
+} from "components/projects/streamer/stream.state";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import WebRTC from "shared/libs/client/WebRTC";
 
 type Props = {
   children?: JSX.Element;
-  text: string;
+  // text: string;
+};
+export const AskPermissionButton: Component<Props> = (props) => {
+  const $localStream = useStore(localStream);
+  const click = (ev: Event) => {
+    navigator.mediaDevices.getUserMedia();
+  };
+  createEffect(() => {
+    navigator.mediaDevices.getUserMedia();
+  });
+  return <button onclick={click}></button>;
 };
 
 export const Call: Component<Props> = (props) => {

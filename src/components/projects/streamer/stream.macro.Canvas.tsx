@@ -8,21 +8,25 @@ type Props = {
   children?: JSX.Element;
 };
 
-const App: Component<Props> = (props) => {
+export const App: Component<Props> = (props) => {
+  let localVideo!: HTMLVideoElement, remoteVideo!: HTMLVideoElement;
   const $getLocalStream = useStore(localStream);
   const $getRemoteStream = useStore(remoteStream);
   console.log("Videos was refreshed");
   createEffect(() => {
+    localVideo.srcObject = $getLocalStream();
+    remoteVideo.srcObject = $getRemoteStream();
+
     console.log("CreateEffect inside video was triggered.");
     console.info("local", $getLocalStream());
-    console.info("local", $getRemoteStream());
+    console.info("remote", $getRemoteStream());
   });
 
   return (
     <>
       <div class="row">
         <video
-          ref={(localVideo) => (localVideo.srcObject = $getLocalStream())}
+          ref={localVideo}
           class="col-6 rounded"
           id="localVideo"
           playsinline
@@ -30,7 +34,7 @@ const App: Component<Props> = (props) => {
           controls={false}
         ></video>
         <video
-          ref={(remoteVideo) => (remoteVideo.srcObject = $getRemoteStream())}
+          ref={remoteVideo}
           class="col-6 rounded"
           id="remoteVideo"
           autoplay
@@ -41,4 +45,3 @@ const App: Component<Props> = (props) => {
     </>
   );
 };
-export default App;

@@ -29,14 +29,11 @@ export const App: Component<Props> = (props) => {
       );
   };
   const [cameras, { mutate, refetch }] = createResource(constraint, getCameras);
-  const updateStream = (ev: Event) => {
-    let streamL: MediaStream | undefined;
-    navigator.mediaDevices
-      .getUserMedia({
-        video: { deviceId: select?.value },
-        audio: check?.checked,
-      })
-      .then((stream) => (streamL = stream));
+  const updateStream = async (ev: Event) => {
+    const streamL = await navigator.mediaDevices.getUserMedia({
+      video: { deviceId: select?.value },
+      audio: check?.checked,
+    });
     streamL ? localStream.set(streamL) : null;
   };
   createEffect(() => (navigator.mediaDevices.ondevicechange = refetch));
