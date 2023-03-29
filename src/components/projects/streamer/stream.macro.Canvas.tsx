@@ -12,7 +12,15 @@ export const App: Component<Props> = (props) => {
   let localVideo!: HTMLVideoElement, remoteVideo!: HTMLVideoElement;
   const getLocalStream = useStore(localStream);
   const getRemoteStream = useStore(remoteStream);
-  createEffect(() => (localVideo.srcObject = getLocalStream()));
+  createEffect(() => {
+    if (localVideo.srcObject) {
+      localVideo.pause();
+      localVideo.srcObject = null;
+    }
+    localVideo.srcObject = getLocalStream();
+    localVideo.load();
+    localVideo.play();
+  });
   createEffect(() => (remoteVideo.srcObject = getRemoteStream()));
 
   return (
@@ -22,17 +30,17 @@ export const App: Component<Props> = (props) => {
           ref={localVideo}
           class="col-6 rounded"
           id="localVideo"
-          playsinline
+          // playsinline
           autoplay
-          controls={false}
+          // controls={false}
         ></video>
         <video
           ref={remoteVideo}
           class="col-6 rounded"
           id="remoteVideo"
           autoplay
-          playsinline
-          controls={false}
+          // playsinline
+          // controls={false}
         ></video>
       </div>
     </>
