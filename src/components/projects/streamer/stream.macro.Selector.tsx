@@ -37,11 +37,15 @@ export const App: Component<Props> = (props) => {
     streamL ? localStream.set(streamL) : null;
   };
   createEffect(() => (navigator.mediaDevices.ondevicechange = refetch));
+  createEffect(() => {
+    select.onchange = updateStream;
+    check.onchange = updateStream;
+  });
   return (
     <>
       <select
         // ref={select}
-        ref={(select) => (select.onchange = updateStream)}
+        ref={select}
         {...attrs}
       >
         <For each={cameras()}>
@@ -56,12 +60,7 @@ export const App: Component<Props> = (props) => {
           )}
         </For>
       </select>
-      <input
-        ref={(check) => (check.onchange = updateStream)}
-        type="checkbox"
-        class="btn-check"
-        id="audioToggle"
-      />
+      <input ref={check} type="checkbox" class="btn-check" id="audioToggle" />
       <label class="btn btn-outline-primary" for="audioToggle">
         Audio
       </label>
