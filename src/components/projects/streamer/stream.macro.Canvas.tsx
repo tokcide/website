@@ -10,17 +10,10 @@ type Props = {
 
 export const App: Component<Props> = (props) => {
   let localVideo!: HTMLVideoElement, remoteVideo!: HTMLVideoElement;
-  const $getLocalStream = useStore(localStream);
-  const $getRemoteStream = useStore(remoteStream);
-  console.log("Videos was refreshed");
-  createEffect(() => {
-    localVideo.srcObject = $getLocalStream();
-    remoteVideo.srcObject = $getRemoteStream();
-
-    console.log("CreateEffect inside video was triggered.");
-    console.info("local", $getLocalStream());
-    console.info("remote", $getRemoteStream());
-  });
+  const getLocalStream = useStore(localStream);
+  const getRemoteStream = useStore(remoteStream);
+  createEffect(() => (localVideo.srcObject = getLocalStream()));
+  createEffect(() => (remoteVideo.srcObject = getRemoteStream()));
 
   return (
     <>

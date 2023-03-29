@@ -5,11 +5,12 @@ import {
   createResource,
   createSignal,
   For,
+  onMount,
   splitProps,
 } from "solid-js";
 import type { JSX, Component } from "solid-js";
 import { useStore } from "@nanostores/solid";
-import { localStream, remoteStream } from "./stream.state";
+import { localStream, remoteStream, updateLocalStream } from "./stream.state";
 
 import type { HTMLAttributes } from "astro/types";
 
@@ -36,10 +37,12 @@ export const App: Component<Props> = (props) => {
     });
     streamL ? localStream.set(streamL) : null;
   };
-  createEffect(() => (navigator.mediaDevices.ondevicechange = refetch));
-  createEffect(() => {
-    select.onchange = updateStream;
-    check.onchange = updateStream;
+  onMount(() => (navigator.mediaDevices.ondevicechange = refetch));
+  onMount(() => {
+    const LocalStreamChangeEvent = () =>
+      updateLocalStream({ deviceId: select?.value }, check?.checked);
+    select.onchange = LocalStreamChangeEvent;
+    check.onchange = LocalStreamChangeEvent;
   });
   return (
     <>
