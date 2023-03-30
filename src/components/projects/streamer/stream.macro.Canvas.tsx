@@ -14,12 +14,12 @@ export const App: Component<Props> = (props) => {
   const getRemoteStream = useStore(remoteStream);
   createEffect(() => {
     // if (localVideo.srcObject) {
-    localVideo.pause();
-    localVideo.srcObject = null;
     // }
     if (getLocalStream()) {
+      localVideo.pause();
       localVideo.srcObject = getLocalStream();
       localVideo.load();
+      console.log("changing stream", getLocalStream());
       localVideo.play();
     }
   });
