@@ -14,7 +14,7 @@
 
 [![simple-icons](https://img.shields.io/github/stars/simple-icons/simple-icons?label=simple-icons&style=for-the-badge)](https://github.com/simple-icons/simple-icons/blob/develop/slugs.md)
 
-# Astro Starter Kit: Basics
+# Starter Kit: Basics
 
 ```
 npm create astro@latest -- --template basics
