@@ -1,7 +1,6 @@
 /** @jsxImportSource solid-js */
 // class="form-select form-select-sm"
 import {
-  createEffect,
   createResource,
   createSignal,
   For,
@@ -9,16 +8,15 @@ import {
   splitProps,
 } from "solid-js";
 import type { JSX, Component } from "solid-js";
+import { updateLocalStream, updateUserCode } from "./stream.store";
+import { usercode } from "./stream.store";
 import { useStore } from "@nanostores/solid";
-import { localStream, remoteStream, updateLocalStream } from "./stream.state";
-
-import type { HTMLAttributes } from "astro/types";
 
 type Props = {
   children?: JSX.Element;
 } & JSX.HTMLAttributes<HTMLSelectElement>;
 
-export const App: Component<Props> = (props) => {
+export const StreamSelector: Component<Props> = (props) => {
   const [, attrs] = splitProps(props, ["children"]);
   let check!: HTMLInputElement, select!: HTMLSelectElement;
   const [constraint, setConstraint] = createSignal("videoinput");
@@ -30,27 +28,18 @@ export const App: Component<Props> = (props) => {
       );
   };
   const [cameras, { mutate, refetch }] = createResource(constraint, getCameras);
-  const updateStream = async (ev: Event) => {
-    const streamL = await navigator.mediaDevices.getUserMedia({
-      video: { deviceId: select?.value },
-      audio: check?.checked,
-    });
-    streamL ? localStream.set(streamL) : null;
-  };
   onMount(() => (navigator.mediaDevices.ondevicechange = refetch));
   onMount(() => {
-    const LocalStreamChangeEvent = () =>
-      updateLocalStream({ deviceId: select?.value }, check?.checked);
-    select.onchange = LocalStreamChangeEvent;
-    check.onchange = LocalStreamChangeEvent;
+    const handler = async () =>
+      await updateLocalStream({ deviceId: select.value }, check.checked);
+
+    handler().then();
+    select.onchange = handler;
+    check.onchange = handler;
   });
   return (
     <>
-      <select
-        // ref={select}
-        ref={select}
-        {...attrs}
-      >
+      <select ref={select} {...attrs}>
         <For each={cameras()}>
           {(camera, index) => (
             <option
@@ -63,10 +52,37 @@ export const App: Component<Props> = (props) => {
           )}
         </For>
       </select>
-      <input ref={check} type="checkbox" class="btn-check" id="audioToggle" />
+      <input
+        ref={check}
+        type="checkbox"
+        class="btn-check"
+        id="audioToggle"
+        checked={false}
+      />
       <label class="btn btn-outline-primary" for="audioToggle">
         Audio
       </label>
     </>
+  );
+};
+
+export const UserCode: Component = (
+  props: JSX.HTMLAttributes<HTMLInputElement>
+) => {
+  let input!: HTMLInputElement;
+  const [, attrs] = splitProps(props, ["children"]);
+  const getUsercode = useStore(usercode);
+  return (
+    <input
+      ref={input}
+      value={getUsercode()}
+      oninput={() => {
+        updateUserCode(input.value);
+      }}
+      class="form-control"
+      placeholder="User code"
+      type="text"
+      {...attrs}
+    />
   );
 };

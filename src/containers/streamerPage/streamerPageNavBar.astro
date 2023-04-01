@@ -1,14 +1,18 @@
 ---
 // import StreamSelector from "components/projects/streamer/stream.macro.Selector.astro";
 // import { Call } from "components/projects/streamer/buttons";
-import { App as Select } from "components/projects/streamer/stream.macro.Selector";
-import { App as Canvas } from "components/projects/streamer/stream.macro.Canvas";
+import {
+  StreamSelector,
+  UserCode,
+} from "components/projects/streamer/selector";
+import { LocalStream } from "components/projects/streamer/video";
 ---
 
 <div>
-  <!-- <StreamSelector /> -->
-  <!-- <Call client:visible /> -->
-  <Select client:visible class="form-select form-select-sm" />
-  <Canvas client:visible />
+  <StreamSelector client:visible class="form-select form-select-sm" />
+  <UserCode client:visible />
+  <div class="div row">
+    <LocalStream client:visible />
+  </div>
 </div>
 <script></script>

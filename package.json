@@ -29,6 +29,7 @@
     "@astrojs/ts-plugin": "^0.4.4",
     "@babel/core": "^7.21.3",
     "@types/amqplib": "^0.10.1",
-    "@types/node": "^18.15.9"
+    "@types/node": "^18.15.9",
+    "@vitejs/plugin-basic-ssl": "^1.0.1"
   }
 }

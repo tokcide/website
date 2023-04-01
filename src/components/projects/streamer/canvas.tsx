@@ -1,6 +1,5 @@
 /** @jsxImportSource solid-js */
 import type { JSX, Component } from "solid-js";
-import { remoteStream } from "./stream.state";
 
 type Props = {
   children?: JSX.Element;
