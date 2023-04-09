@@ -1,33 +1,8 @@
 ---
 import BaseLayout from "components/BaseLayout.astro";
-import NavBar from "components/projects/streamer/NavBar.astro";
-// import StreamSelector from "components/projects/streamer/StreamSelector.astro";
-import Spnb from "containers/streamerPage/streamerPageNavBar.astro";
+import Main from "projects/streamer/main.astro";
 ---
 
-<BaseLayout
-  title="Application"
-  config={{ bootstrap: true, bootstrapJs: false }}
->
-  <div class="container">
-    <div class="row">
-      <div class="col"></div>
-      <div class="col-2 pt-4">
-        <!-- <ModalFireButton /> -->
-      </div>
-    </div>
-    <Spnb />
-    <h1>Welcome to <span class="text-gradient">CCA1year Project</span></h1>
-    <!-- <StreamSelector /> -->
-    <!-- <StreamCanvas /> -->
-    <footer>
-      <p class="instructions">
-        This is our 1st sem CCA project which is a link between a camera module
-        and a display. Project made by Kanishk Chaudhary, Anjnay Mahajan and
-        Bhuvnesh Kumar. <br />
-        <br />
-        <strong>THANKYOU</strong>
-      </p>
-    </footer>
-  </div>
+<BaseLayout title="App" config={{ bootstrap: true, bootstrapJs: false }}>
+  <Main />
 </BaseLayout>

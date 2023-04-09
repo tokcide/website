@@ -4,7 +4,7 @@
     "importsNotUsedAsValues": "error",
     "baseUrl": "src",
     "paths": {
-      "@store/*": ["store/store/*"]
+      "@store/*": ["./store/*"]
     },
     "jsx": "preserve",
     "jsxImportSource": "solid-js"

@@ -1,0 +1,21 @@
+---
+import { Connect } from "./components/button";
+import { StreamBox } from "./components/stream";
+import Qrcode from "./widgets/qrcode.astro";
+import { Scanner } from "./components/qrcode.on-hold";
+//
+// import { Some } from "./main";
+---
+
+<script>
+  import Peer from "peerjs";
+  import { peerConnection as p } from "./nano.store";
+
+  const peer = new Peer({ config: undefined });
+  p.set(peer);
+</script>
+<!-- <Some client:load /> -->
+<StreamBox client:load />
+<Connect client:load />
+<Scanner client:load />
+<Qrcode />

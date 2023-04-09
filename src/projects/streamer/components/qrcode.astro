@@ -1,7 +1,7 @@
 ---
-import TabLocalBody from "./TabLocalBody.astro";
-import TabRemoteBody from "./TabRemoteBody.astro";
-
+// import TabLocalBody from "./TabLocalBody.astro";
+// import TabRemoteBody from "./TabRemoteBody.astro";
+import { Generate } from "./qrcode.on-hold";
 export interface Props {
   data?: string;
 }
@@ -12,20 +12,21 @@ const { data = "" } = Astro.props;
 <button
   class="btn btn-primary"
   data-bs-toggle="modal"
-  data-bs-target="#connectStreamModal">Connect</button
+  data-bs-target="#qrcodeModal">Use QR</button
 >
+<div id="reader"></div>
 
-<div class="modal modal-lg fade" id="connectStreamModal">
+<div class="modal modal-lg fade" id="qrcodeModal">
   <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-md-down">
     <div class="modal-content">
       <h2 class="modal-header">
         Stream Connector<button
           class="btn-close"
           data-bs-dismiss="modal"
-          data-bs-target="connectStreamModal"></button>
+          data-bs-target="qrcodeModal"></button>
       </h2>
       <div class="modal-body">
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">
             <button
               class="nav-link active"
@@ -35,7 +36,7 @@ const { data = "" } = Astro.props;
               type="button"
               role="tab"
               aria-controls="pills-local"
-              aria-selected="true">Local (camera)</button
+              aria-selected="true">Generate</button
             >
           </li>
           <li class="nav-item" role="presentation">
@@ -47,7 +48,7 @@ const { data = "" } = Astro.props;
               type="button"
               role="tab"
               aria-controls="pills-remote"
-              aria-selected="false">Remote (display)</button
+              aria-selected="false">Scaner</button
             >
           </li>
         </ul>
@@ -60,7 +61,7 @@ const { data = "" } = Astro.props;
             tabindex="0"
           >
             <div class="p-3">
-              <TabLocalBody />
+              <Generate client:load />
             </div>
           </div>
           <div
@@ -70,9 +71,7 @@ const { data = "" } = Astro.props;
             aria-labelledby="pills-remote-tab"
             tabindex="0"
           >
-            <div class="p-3">
-              <TabRemoteBody />
-            </div>
+            <div class="p-3"></div>
           </div>
         </div>
         <div class="modal-footer">
@@ -83,3 +82,32 @@ const { data = "" } = Astro.props;
     </div>
   </div>
 </div>
+
+<script>
+  // import { targetConnectionId } from "../nano.store";
+  import { Html5QrcodeScanner } from "html5-qrcode";
+
+  import type { Html5QrcodeResult } from "html5-qrcode/esm/core";
+
+  import { targetConnectionId } from "../nano.store";
+
+  function onScanSuccess(
+    decodedText: string,
+    decodedResult: Html5QrcodeResult
+  ) {
+    // handle the scanned code as you like, for example:
+    alert("QR captured, you can stop scanning now");
+    targetConnectionId.set(decodedText);
+    console.log(`Code matched = ${decodedText}`, decodedResult);
+  }
+
+  let html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader",
+    {
+      fps: 10,
+      qrbox: { width: 250, height: 450 },
+    },
+    false
+  );
+  html5QrcodeScanner.render(onScanSuccess, undefined);
+</script>
