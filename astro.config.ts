@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 // Server Side Rendering
-import netlify from "@astrojs/netlify/functions";
+import netlify from "@astrojs/netlify";
 // UI Framework
 import solidJs from "@astrojs/solid-js";
 // CSS Framework
