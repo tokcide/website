@@ -34,8 +34,7 @@
     "@babel/core": "^7.21.4",
     "@types/amqplib": "^0.10.1",
     "@types/node": "^18.15.11",
-    "@vitejs/plugin-basic-ssl": "^1.0.1",
-    "html5-qrcode": "^2.3.7"
+    "@vitejs/plugin-basic-ssl": "^1.0.1"
   },
   "pnpm": {
     "peerDependencyRules": {

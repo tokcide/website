@@ -22,7 +22,6 @@ specifiers:
   '@vitejs/plugin-basic-ssl': ^1.0.1
   amqplib: ^0.10.3
   astro: ^2.2.1
-  html5-qrcode: ^2.3.7
   nanostores: ^0.7.4
   npm: ^9.6.4
   peerjs: ^1.4.7
@@ -55,7 +54,6 @@ devDependencies:
   '@types/amqplib': 0.10.1
   '@types/node': 18.15.11
   '@vitejs/plugin-basic-ssl': 1.0.1
-  html5-qrcode: 2.3.7
 
 packages:
 
@@ -2112,10 +2110,6 @@ packages:
   /html-void-elements/2.0.1:
     resolution: {integrity: sha512-0quDb7s97CfemeJAnW9wC0hw78MtW7NU3hqtCD75g2vFlDLt36llsYD7uB7SUzojLMP24N5IatXf7ylGXiGG9A==}
     dev: false
-
-  /html5-qrcode/2.3.7:
-    resolution: {integrity: sha512-Jmlok9Ynm49hgVXkdupWryf8o430proIFoQsRl1LmTg4Rq461W72omylR9yw9tsEMtswMEw3wacUM5y0agOBQA==}
-    dev: true
 
   /human-signals/3.0.1:
     resolution: {integrity: sha512-rQLskxnM/5OCldHo+wNXbpVgDn5A17CUoKX+7Sokwaknlq7CdSnphy0W39GU8dw59XiCXmFXDg4fRuckQRKewQ==}

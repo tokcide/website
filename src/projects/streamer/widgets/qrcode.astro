@@ -1,5 +1,5 @@
 ---
-import { Generate, Scanner } from "../components/qrcode.on-hold";
+import { Generate, Scanner } from "../components/qrcode";
 ---
 
 <button
@@ -53,7 +53,7 @@ import { Generate, Scanner } from "../components/qrcode.on-hold";
             tabindex="0"
           >
             <div class="p-3">
-              <Generate client:load />
+              <Generate client:visible />
             </div>
           </div>
           <div
@@ -63,13 +63,12 @@ import { Generate, Scanner } from "../components/qrcode.on-hold";
             aria-labelledby="pills-remote-tab"
             tabindex="0"
           >
-            <div class="p-3"></div>
+            <div class="p-3">
+              <Scanner client:visible />
+            </div>
           </div>
         </div>
-        <div class="modal-footer">
-          Footer
-          <!-- <button class="btn btn-primary" data-bs-dismiss="modal">Close</button> -->
-        </div>
+        <div class="modal-footer">Footer</div>
       </div>
     </div>
   </div>
