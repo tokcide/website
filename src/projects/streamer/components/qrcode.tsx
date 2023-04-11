@@ -99,6 +99,10 @@ export const Scanner = () => {
               <button
                 class="btn btn-outline-primary"
                 onclick={() => {
+                  if (video.srcObject === null) {
+                    console.log("video is null");
+                    return;
+                  }
                   setClicked(true);
                   canvas.width = video.videoWidth;
                   canvas.height = video.videoHeight;
@@ -116,8 +120,10 @@ export const Scanner = () => {
                     })
                       .then((res) => res.json())
                       .then((json) => {
-                        console.log(json);
-                        targetConnectionId.set(json[0].data ?? null);
+                        console.log(json[0]["symbol"][0]["error"]);
+                        targetConnectionId.set(
+                          json[0]["symbol"][0].data ?? null
+                        );
                       });
                   }, "image/png");
                 }}
