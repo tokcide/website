@@ -34,12 +34,14 @@
     "@types/amqplib": "^0.10.1",
     "@types/node": "^18.15.11",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
-    "netlify-cli": "^13.2.2"
+    "netlify-cli": "^13.2.2",
+    "vercel": "^28.18.4"
   },
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
-        "vite"
+        "vite",
+        "react"
       ]
     },
     "overrides": {

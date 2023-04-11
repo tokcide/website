@@ -1,6 +1,5 @@
 import { defineConfig } from "astro/config";
 // Server Side Rendering
-import netlify from "@astrojs/netlify";
 import vercel from "@astrojs/vercel/serverless";
 // UI Framework
 import solidJs from "@astrojs/solid-js";
@@ -20,9 +19,6 @@ export default defineConfig({
       presets: [
         presetWind(),
         /* more presets */
-      ],
-      safelist: [
-        /* this you can use to exclude utilities from purge */
       ],
     }),
   ],
