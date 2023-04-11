@@ -17,7 +17,7 @@ export const post: APIRoute = async ({ request }) => {
       body: await request.formData(),
     })
       .then(async (response) => {
-        console.log(await response.text());
+        // console.log(await response.text());
         return response.json();
       })
       .then((json) => json[0]["symbol"])
