@@ -7,7 +7,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "husky install",
+    "update": "pnpm update"
   },
   "dependencies": {
     "@astrojs/solid-js": "^2.1.0",
@@ -33,7 +35,8 @@
     "@babel/core": "^7.21.4",
     "@types/amqplib": "^0.10.1",
     "@types/node": "^18.15.11",
-    "@vitejs/plugin-basic-ssl": "^1.0.1"
+    "@vitejs/plugin-basic-ssl": "^1.0.1",
+    "husky": "^8.0.3"
   },
   "pnpm": {
     "peerDependencyRules": {
