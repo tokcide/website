@@ -13,7 +13,7 @@
     "@astrojs/solid-js": "^2.1.0",
     "@astrojs/vercel": "^3.2.3",
     "@nanostores/solid": "^0.3.2",
-    "@supabase/supabase-js": "^2.18.0",
+    "@supabase/supabase-js": "^2.20.0",
     "@tanstack/solid-query": "^4.29.1",
     "@trpc/client": "^10.19.1",
     "@trpc/server": "^10.19.1",
@@ -21,7 +21,7 @@
     "@unocss/preset-wind": "^0.50.8",
     "@unocss/reset": "^0.50.8",
     "amqplib": "^0.10.3",
-    "astro": "^2.2.1",
+    "astro": "^2.2.3",
     "nanostores": "^0.7.4",
     "npm": "^9.6.4",
     "peerjs": "^1.4.7",
@@ -33,9 +33,7 @@
     "@babel/core": "^7.21.4",
     "@types/amqplib": "^0.10.1",
     "@types/node": "^18.15.11",
-    "@vitejs/plugin-basic-ssl": "^1.0.1",
-    "netlify-cli": "^13.2.2",
-    "vercel": "^28.18.4"
+    "@vitejs/plugin-basic-ssl": "^1.0.1"
   },
   "pnpm": {
     "peerDependencyRules": {

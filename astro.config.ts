@@ -12,7 +12,7 @@ import basicSsl from "@vitejs/plugin-basic-ssl";
 // https://astro.build/config
 export default defineConfig({
   output: "server",
-  adapter: vercel(),
+  adapter: vercel({ analytics: true }),
   integrations: [
     solidJs(),
     unocss({

@@ -1,3 +1,5 @@
 export const get = () => {
-  return "test successful";
+  return {
+    status: "test successful",
+  };
 };
