@@ -1,3 +1,5 @@
+![Vercel deployments](https://img.shields.io/github/deployments/tokcide/website/production?label=vercel&logo=vercel&style=for-the-badge)
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/dc211944-a755-4690-868f-f1549254266a/deploy-status)](https://app.netlify.com/sites/tokcide/deploys)
 
 [![pnpm](https://img.shields.io/badge/pnpm-docs-informational?style=flat-square&logo=pnpm)](https://pnpm.io/pnpm-cli)
