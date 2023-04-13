@@ -111,24 +111,24 @@ export const Scanner = () => {
       >
         <div class="flex justify-center">
           <canvas ref={canvas}></canvas>
-          <div
-            class="btn-group-vertical"
-            role="group"
-            aria-label="Vertical button group"
+        </div>
+        <div
+          class="btn-group flex justify-center p-2"
+          role="group"
+          aria-label="QR video controls"
+        >
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick={() => {
+              setClicked(false);
+            }}
           >
-            <button
-              type="button"
-              class="btn btn-primary"
-              onclick={() => {
-                setClicked(false);
-              }}
-            >
-              Retake
-            </button>
-            <button type="button" class="btn btn-primary">
-              Proceed
-            </button>
-          </div>
+            Retake
+          </button>
+          <button type="button" class="btn btn-primary">
+            Proceed
+          </button>
         </div>
       </Show>
     </>
@@ -141,11 +141,13 @@ export const Generate = () => {
   return (
     <>
       <Show when={id() != null} fallback={<div>Loading...</div>}>
-        <img
-          src={`https://api.qrserver.com/v1/create-qr-code/?data=${id()}&size=750x750`}
-          alt=""
-          title=""
-        />
+        <div class="flex justify-center">
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?data=${id()}&size=500x500`}
+            alt=""
+            title=""
+          />
+        </div>
       </Show>
     </>
   );

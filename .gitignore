@@ -22,5 +22,7 @@ pnpm-debug.log*
 
 .env.local
 src/.dump
+
 # Local Netlify folder
 .netlify
+.vercel

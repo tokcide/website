@@ -4,4 +4,4 @@
 pnpm update
 npm i --package-lock-only
 git add ./package-lock.json
-git add ./pnpm-lock.json
+git add ./pnpm-lock.yaml
