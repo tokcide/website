@@ -30,39 +30,41 @@ export const StreamVideo: Component<
   });
   return (
     <>
-      <label for={ID}>{props.stream.name}</label>
-      <video
-        ref={video}
-        id={ID}
-        class="col-auto rounded"
-        autoplay
-        playsinline
-        controls={false}
-      ></video>
-      <Show
-        when={clicked()}
-        fallback={
-          <button
-            class="btn btn-primary ml-2"
-            onclick={() => {
-              setClicked(true);
-              canvas.height = video.videoHeight;
-              canvas.width = video.videoWidth;
-              canvas.getContext("2d")?.drawImage(video, 0, 0);
-            }}
-          >
-            Capture
-          </button>
-        }
-      >
-        <canvas ref={canvas}></canvas>
-        <button
-          class="btn btn-primary m-auto"
-          onclick={() => setClicked(false)}
+      <div class="container-fluid">
+        <label for={ID}>{props.stream.name}</label>
+        <video
+          ref={video}
+          id={ID}
+          class="col-auto rounded"
+          autoplay
+          playsinline
+          controls={false}
+        ></video>
+        <Show
+          when={clicked()}
+          fallback={
+            <button
+              class="btn btn-outline-primary m-2"
+              onclick={() => {
+                setClicked(true);
+                canvas.height = video.videoHeight;
+                canvas.width = video.videoWidth;
+                canvas.getContext("2d")?.drawImage(video, 0, 0);
+              }}
+            >
+              Capture
+            </button>
+          }
         >
-          Re-capture
-        </button>
-      </Show>
+          <canvas ref={canvas}></canvas>
+          <button
+            class="btn btn-outline-danger m-2"
+            onclick={() => setClicked(false)}
+          >
+            Delete
+          </button>
+        </Show>
+      </div>
     </>
   );
 };

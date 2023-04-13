@@ -1,33 +1,8 @@
 import { useStore } from "@nanostores/solid";
 import { createEffect, createResource, createSignal, onMount } from "solid-js";
 import { Show } from "solid-js/web";
-import { localConnectionId, peerConnection } from "../nano.store";
+import { localConnectionId } from "../nano.store";
 import { targetConnectionId } from "../nano.store";
-
-// export const Scanner = () => {
-//   onMount(() => {
-//     function onScanSuccess(
-//       decodedText: string,
-//       decodedResult: Html5QrcodeResult
-//     ) {
-//       // handle the scanned code as you like, for example:
-//       alert("QR captured, you can stop scanning now");
-//       targetConnectionId.set(decodedText);
-//       console.log(`Code matched = ${decodedText}`, decodedResult);
-//     }
-
-//     let html5QrcodeScanner = new Html5QrcodeScanner(
-//       "reader",
-//       {
-//         fps: 10,
-//         qrbox: { width: 250, height: 450 },
-//       },
-//       false
-//     );
-//     html5QrcodeScanner.render(onScanSuccess, undefined);
-//   });
-//   return <div id="reader"></div>;
-// };
 
 export const Scanner = () => {
   let video!: HTMLVideoElement, canvas!: HTMLCanvasElement;

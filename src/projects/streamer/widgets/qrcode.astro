@@ -22,24 +22,24 @@ import { Generate, Scanner } from "../components/qrcode";
           <li class="nav-item" role="presentation">
             <button
               class="nav-link active"
-              id="pills-local-tab"
+              id="pills-generate-tab"
               data-bs-toggle="pill"
-              data-bs-target="#pills-local"
+              data-bs-target="#pills-generate"
               type="button"
               role="tab"
-              aria-controls="pills-local"
+              aria-controls="pills-generate"
               aria-selected="true">Generate</button
             >
           </li>
           <li class="nav-item" role="presentation">
             <button
               class="nav-link"
-              id="pills-remote-tab"
+              id="pills-scanner-tab"
               data-bs-toggle="pill"
-              data-bs-target="#pills-remote"
+              data-bs-target="#pills-scanner"
               type="button"
               role="tab"
-              aria-controls="pills-remote"
+              aria-controls="pills-scanner"
               aria-selected="false">Scaner</button
             >
           </li>
@@ -47,9 +47,9 @@ import { Generate, Scanner } from "../components/qrcode";
         <div class="tab-content" id="pills-tabContent">
           <div
             class="tab-pane fade show active"
-            id="pills-local"
+            id="pills-generate"
             role="tabpanel"
-            aria-labelledby="pills-local-tab"
+            aria-labelledby="pills-generate-tab"
             tabindex="0"
           >
             <div class="p-3">
@@ -58,9 +58,9 @@ import { Generate, Scanner } from "../components/qrcode";
           </div>
           <div
             class="tab-pane fade"
-            id="pills-remote"
+            id="pills-scanner"
             role="tabpanel"
-            aria-labelledby="pills-remote-tab"
+            aria-labelledby="pills-scanner-tab"
             tabindex="0"
           >
             <div class="p-3">
@@ -68,7 +68,10 @@ import { Generate, Scanner } from "../components/qrcode";
             </div>
           </div>
         </div>
-        <div class="modal-footer">Footer</div>
+        <div class="modal-footer">
+          Use the Generate tab for streaming to a device, and the Scanner tab to
+          stream from a device
+        </div>
       </div>
     </div>
   </div>
