@@ -1,7 +1,6 @@
 ---
-import { Connect } from "./components/button";
 import { StreamBox } from "./components/stream";
-import Qrcode from "./widgets/qrcode.astro";
+import Navbar from "./widgets/navbar.astro";
 ---
 
 <script>
@@ -11,7 +10,5 @@ import Qrcode from "./widgets/qrcode.astro";
   const peer = new Peer({ config: undefined });
   p.set(peer);
 </script>
-<!-- <Some client:load /> -->
+<Navbar />
 <StreamBox client:load />
-<Connect client:load />
-<Qrcode />
