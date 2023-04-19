@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-pnpm update
-npm i --package-lock-only
-git add ./package-lock.json
-git add ./pnpm-lock.yaml
