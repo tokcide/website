@@ -34,7 +34,8 @@
     "@types/amqplib": "^0.10.1",
     "@types/node": "^18.15.11",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
-    "husky": "^8.0.3"
+    "husky": "^8.0.3",
+    "vercel": "^28.18.5"
   },
   "pnpm": {
     "peerDependencyRules": {

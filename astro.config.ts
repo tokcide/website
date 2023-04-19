@@ -12,7 +12,7 @@ import basicSsl from "@vitejs/plugin-basic-ssl";
 // https://astro.build/config
 export default defineConfig({
   outDir: "./dist",
-  site: "https://kanishkk.vercek.app",
+  site: "https://www.kanishkk.vercek.app",
   output: "server",
   adapter: vercel({ analytics: true }),
   integrations: [

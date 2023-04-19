@@ -26,3 +26,5 @@ src/.dump
 # Local Netlify folder
 .netlify
 .vercel
+.husky
+.vscode
