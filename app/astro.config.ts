@@ -7,11 +7,9 @@ import solidJs from "@astrojs/solid-js";
 import unocss from "@unocss/astro";
 import presetWind from "@unocss/preset-wind";
 // AstroVite-plugins
-import basicSsl from "@vitejs/plugin-basic-ssl";
 
 // https://astro.build/config
 export default defineConfig({
-  outDir: "./dist",
   site: "https://www.kanishkk.vercek.app",
   output: "server",
   adapter: vercel({ analytics: true }),
@@ -25,6 +23,6 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [basicSsl()],
+    plugins: [],
   },
 });

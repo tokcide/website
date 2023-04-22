@@ -1,15 +1,3 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "compilerOptions": {
-    "importsNotUsedAsValues": "error",
-    "baseUrl": "src",
-    "paths": {
-      "@store/*": ["./store/*"]
-    },
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js"
-  },
-  "plugins": {
-    "name": "@astrojs/ts-plugin"
-  }
+  "extends": "./tsconfig.base.json"
 }
