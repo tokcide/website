@@ -33,8 +33,7 @@
     "@astrojs/ts-plugin": "^0.4.4",
     "@babel/core": "^7.21.4",
     "@types/amqplib": "^0.10.1",
-    "@types/node": "^18.15.13",
-    "vercel": "^28.20.0"
+    "@types/node": "^18.15.13"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -44,7 +43,9 @@
       ]
     },
     "overrides": {
-      "vite": "^4.0.0"
+      "@npmcli/move-file@1.1.2": "@npmcli/fs",
+      "rollup-plugin-inject@3.0.2": "@rollup/plugin-inject",
+      "sourcemap-codec@1.4.8": "@jridgewell/sourcemap-codec"
     }
   }
 }

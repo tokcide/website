@@ -1,1 +1,2 @@
 export const sayHi = (userName: string) => console.log(`Hi ${userName}`);
+sayHi("thhis");
