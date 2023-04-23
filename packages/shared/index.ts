@@ -1,4 +1,4 @@
-import supabase from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 // import peerjs from "peerjs";
-export { supabase };
+export { createClient };
 export { default as peerjs, type Peer } from "peerjs";

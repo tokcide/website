@@ -4,7 +4,6 @@
   "description": "libraries for main astro app",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc",
     "update": "pnpm update"
   },
   "keywords": [],
