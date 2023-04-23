@@ -3,13 +3,13 @@ import { StreamBox } from "./components/stream";
 import Navbar from "./widgets/navbar.astro";
 ---
 
-<script>
+<!-- <script>
   import Peer from "peerjs";
   import { peerConnection as p } from "./nano.store";
 
   const peer = new Peer({ config: undefined });
   p.set(peer);
-</script>
+</script> -->
 <Navbar />
 <div class="container">
   <StreamBox client:load />

@@ -1,6 +1,6 @@
 /** @jsxImportSource solid-js */
 import { useStore } from "@nanostores/solid";
-import { Component, JSX, Show, createEffect } from "solid-js";
+import { Component, JSX, createEffect } from "solid-js";
 import { onCleanup, onMount } from "solid-js";
 import {
   localConnectionId,
@@ -8,7 +8,7 @@ import {
   targetConnectionId,
 } from "../nano.store";
 import type { StreamGroup } from "../solid.stores";
-import { streams, setStreams } from "../solid.stores";
+import { setStreams } from "../solid.stores";
 
 export const Connect: Component = () => {
   const peer$ = useStore(peerConnection);
