@@ -1,7 +1,6 @@
 /** @jsxImportSource solid-js */
 import { useStore } from "@nanostores/solid";
-import { Component, JSX, createEffect } from "solid-js";
-import { onCleanup, onMount } from "solid-js";
+import type { Component, JSX } from "solid-js";
 import {
   localConnectionId,
   peerConnection,
@@ -13,26 +12,6 @@ import { setStreams } from "../solid.stores";
 export const Connect: Component = () => {
   const peer$ = useStore(peerConnection);
 
-  onMount(() => {
-    peer$()?.on("open", (id) => localConnectionId.set(id));
-
-    peer$()?.on("call", (call) => {
-      call.on("stream", (stream) =>
-        setStreams(0, {
-          name: "remote-stream",
-          fromId: call.peer,
-          stream: stream,
-        } satisfies StreamGroup)
-      );
-      call.answer();
-
-      console.log("Call accepted");
-    });
-  });
-  onCleanup(() => {
-    peer$()?.destroy();
-  });
-  createEffect;
   return (
     <>
       <button
@@ -65,6 +44,7 @@ export const Connect: Component = () => {
     </>
   );
 };
+
 export const SwitchCamera: Component = (
   props: JSX.HTMLAttributes<HTMLButtonElement> & { stream?: MediaStream }
 ) => {

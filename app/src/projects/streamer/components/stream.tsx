@@ -1,9 +1,9 @@
 /** @jsxImportSource solid-js */
-import { createSignal, createEffect, For, onMount, Show } from "solid-js";
+import { createSignal, createEffect, For, Show } from "solid-js";
 import type { JSX, Component } from "solid-js";
 import { streams, StreamGroup } from "../solid.stores";
 
-export const StreamBox: Component<{ children?: JSX.Element }> = (props) => {
+export const StreamBox: Component<{ children?: JSX.Element }> = () => {
   createEffect(() => {
     console.log(streams);
   });

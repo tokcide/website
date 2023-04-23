@@ -16,7 +16,9 @@ export const Scanner = () => {
         devices.filter((device) => device.kind === "videoinput")
       )
   );
-  onMount(() => {});
+  onMount(() =>
+    navigator.mediaDevices.addEventListener("devicechange", refetch)
+  );
   const flushStreams = () => {
     stream$()
       ?.getTracks()
@@ -54,11 +56,13 @@ export const Scanner = () => {
                     const nextId =
                       device() + 1 <= cams.length - 1 ? device() + 1 : 0;
                     flushStreams();
-                    navigator.mediaDevices
-                      .getUserMedia({
-                        video: { deviceId: cams[nextId].deviceId },
-                      })
-                      .then((stream) => setStream(stream));
+                    const nextDevice = cams[nextId];
+                    if (nextDevice)
+                      navigator.mediaDevices
+                        .getUserMedia({
+                          video: { deviceId: nextDevice.deviceId },
+                        })
+                        .then((stream) => setStream(stream));
                     setDevice(nextId);
                   } else {
                     navigator.mediaDevices
