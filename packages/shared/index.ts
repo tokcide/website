@@ -1,2 +1,4 @@
-export const sayHi = (userName: string) => console.log(`Hi ${userName}`);
-sayHi("thhis");
+import supabase from "@supabase/supabase-js";
+// import peerjs from "peerjs";
+export { supabase };
+export { default as peerjs, type Peer } from "peerjs";

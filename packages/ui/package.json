@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "update": "pnpm update && npm install --package-lock-only",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

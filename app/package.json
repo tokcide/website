@@ -1,17 +1,17 @@
 {
   "name": "@website/app",
   "type": "module",
-  "version": "0.0.1",
   "scripts": {
     "astro": "astro",
     "start": "astro dev --host",
     "build": "astro build",
-    "update": "pnpm update"
+    "update": "pnpm update && git add ./pnpm-lock.yaml"
   },
   "dependencies": {
     "@astrojs/solid-js": "^2.1.0",
     "@astrojs/vercel": "^3.2.4",
     "@nanostores/solid": "^0.3.2",
+    "@packages/shared": "workspace:*",
     "@packages/ui": "workspace:*",
     "@supabase/supabase-js": "^2.21.0",
     "@tanstack/bling": "^0.5.0",
@@ -43,8 +43,6 @@
       ]
     },
     "overrides": {
-      "@npmcli/move-file@1.1.2": "@npmcli/fs",
-      "rollup-plugin-inject@3.0.2": "@rollup/plugin-inject",
       "sourcemap-codec@1.4.8": "@jridgewell/sourcemap-codec"
     }
   }

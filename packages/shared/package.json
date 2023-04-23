@@ -1,12 +1,17 @@
 {
   "private": "true",
   "name": "@packages/shared",
-  "description": "",
+  "description": "libraries for main astro app",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "update": "pnpm update"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.21.0",
+    "peerjs": "^1.4.7"
+  }
 }

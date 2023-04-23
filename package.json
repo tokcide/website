@@ -1,20 +1,33 @@
 {
   "name": "website",
-  "version": "1.0.0",
-  "description": "",
+  "description": "My Website",
   "main": "index.js",
   "scripts": {
-    "build": "echo ${HOME}",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm nx build @website/app",
+    "dev": "pnpm nx start @website/app",
+    "dnm": "find . -type d -name node_modules -prune -exec rm -rf {} \\;"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.15.13",
     "nx": "^15.9.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "vercel": "^28.20.0"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "vite",
+        "react"
+      ]
+    },
+    "requiredScripts": [
+      "build"
+    ],
+    "overrides": {
+      "@npmcli/move-file@1.1.2": "@npmcli/fs",
+      "rollup-plugin-inject@3.0.2": "@rollup/plugin-inject",
+      "sourcemap-codec@1.4.8": "@jridgewell/sourcemap-codec"
+    }
   }
 }

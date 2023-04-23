@@ -7,6 +7,17 @@
       "problemMatcher": [],
       "label": "npm: dev",
       "detail": "astro dev"
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "label": "npm: build",
+      "detail": "pnpm nx build @website/app"
     }
   ]
 }
