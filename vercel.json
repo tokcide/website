@@ -7,5 +7,6 @@
   "installCommand": "pnpm install",
   "redirects": [],
   "regions": ["bom1"],
-  "trailingSlash": false
+  "trailingSlash": false,
+  "outputDirectory": ".vercel/"
 }

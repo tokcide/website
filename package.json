@@ -1,19 +1,42 @@
 {
-  "name": "website",
-  "description": "My Website",
-  "main": "index.js",
+  "name": "@website/app",
+  "type": "module",
   "scripts": {
-    "build": "pnpm nx build @website/app",
-    "dev": "pnpm nx start @website/app",
-    "dnm": "find . -type d -name node_modules -prune -exec rm -rf {} \\;"
+    "astro": "astro",
+    "build": "astro build",
+    "dev": "astro dev --host",
+    "dnm": "find . -type d -name node_modules -prune -exec rm -rf {} \\;",
+    "update": "pnpm update && git add ./pnpm-lock.yaml"
+  },
+  "dependencies": {
+    "@astrojs/solid-js": "^2.1.0",
+    "@astrojs/vercel": "^3.2.4",
+    "@nanostores/solid": "^0.3.2",
+    "@packages/shared": "workspace:*",
+    "@packages/ui": "workspace:*",
+    "@tanstack/bling": "^0.5.0",
+    "@tanstack/solid-query": "^4.29.1",
+    "@trpc/client": "^10.21.1",
+    "@trpc/server": "^10.21.1",
+    "@unocss/astro": "^0.50.8",
+    "@unocss/preset-wind": "^0.50.8",
+    "@unocss/reset": "^0.50.8",
+    "amqplib": "^0.10.3",
+    "astro": "^2.3.0",
+    "nanostores": "^0.7.4",
+    "npm": "^9.6.5",
+    "solid-js": "^1.7.3",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/node": "^18.15.13",
+    "@astrojs/ts-plugin": "^0.4.4",
+    "@babel/core": "^7.21.4",
+    "@types/amqplib": "^0.10.1",
+    "@types/node": "^18.16.0",
     "nx": "^15.9.2",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
     "vercel": "^28.20.0"
   },
+  "devDependenciesMeta": {},
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
@@ -24,10 +47,10 @@
     "requiredScripts": [
       "build"
     ],
-    "overrides": {
-      "@npmcli/move-file@1.1.2": "@npmcli/fs",
-      "rollup-plugin-inject@3.0.2": "@rollup/plugin-inject",
-      "sourcemap-codec@1.4.8": "@jridgewell/sourcemap-codec"
+    "allowedDeprecatedVersions": {
+      "@npmcli/move-file": "1.1.2",
+      "rollup-plugin-inject": "3.0.2",
+      "sourcemap-codec": "1.4.8"
     }
   }
 }

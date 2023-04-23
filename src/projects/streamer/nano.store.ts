@@ -31,6 +31,3 @@ onMount(peerConnection, () => {
 
 export const localConnectionId = atom<string>("");
 export const targetConnectionId = atom<string>("");
-// targetConnectionId.subscribe((v) => {
-//   console.log("this is target", v);
-// });
