@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "buildCommand": "pnpm build",
-  "devCommand": "pnpm nx dev @website/app",
   "framework": "astro",
+  "buildCommand": "pnpm build",
+  "devCommand": "pnpm dev",
   "installCommand": "pnpm install",
   "redirects": [],
   "regions": ["bom1"],

@@ -1,12 +1,10 @@
 import { defineConfig } from "astro/config";
-// Server Side Rendering
 import vercel from "@astrojs/vercel/serverless";
-// UI Framework
 import solidJs from "@astrojs/solid-js";
-// CSS Framework
 import unocss from "@unocss/astro";
 import presetWind from "@unocss/preset-wind";
-// AstroVite-plugins
+
+import purgecss from "astro-purgecss";
 
 // https://astro.build/config
 export default defineConfig({
@@ -21,6 +19,7 @@ export default defineConfig({
         /* more presets */
       ],
     }),
+    purgecss(),
   ],
   vite: {
     plugins: [],

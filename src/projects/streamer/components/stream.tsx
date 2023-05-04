@@ -1,7 +1,7 @@
 /** @jsxImportSource solid-js */
 import { createSignal, createEffect, For, Show } from "solid-js";
 import type { JSX, Component } from "solid-js";
-import { streams, StreamGroup } from "../solid.stores";
+import { streams, StreamGroup } from "../shared/stores";
 
 export const StreamBox: Component<{ children?: JSX.Element }> = () => {
   createEffect(() => {

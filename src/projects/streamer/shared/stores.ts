@@ -1,13 +1,22 @@
 import { atom, onMount } from "nanostores";
-import type { Peer } from "@packages/shared";
+import type { Peer } from "peerjs";
 import { isServer } from "solid-js/web";
-import { StreamGroup, setStreams } from "./solid.stores";
+import { createStore } from "solid-js/store";
+
+export interface StreamGroup {
+  name: string;
+  fromId: string;
+  stream: MediaStream;
+}
+
+export const [streams, setStreams] = createStore<StreamGroup[]>([]);
 
 export const peerConnection = atom<Peer | undefined>();
 onMount(peerConnection, () => {
   if (!isServer) {
-    import("@packages/shared")
-      .then(({ peerjs }) => new peerjs({ debug: 3 }))
+    import("peerjs")
+      .then(({ default: peerjs }) => new peerjs({ debug: 3 }))
+      // .then(({ peerjs: { default: peerjs } }) => new peerjs({ debug: 3 }))
       .then((p) => peerConnection.set(p))
       .then(() => {
         peerConnection.get()?.on("open", (id) => localConnectionId.set(id));

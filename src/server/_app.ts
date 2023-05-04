@@ -1,4 +1,4 @@
-import { publicProcedure, router } from "./init";
+import { publicProcedure, router } from "@server/index";
 
 const appRouter = router({
   greeting: publicProcedure.query(() => "hello tRPC v10!"),

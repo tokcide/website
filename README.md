@@ -1,4 +1,9 @@
-things to add - supabase, axiom, upstash
+# things to add
+
+- [x] supabase
+- [ ] trpc
+- [ ] axiom
+- [ ] upstash
 
 ![Vercel deployments](https://img.shields.io/github/deployments/tokcide/website/production?label=vercel&logo=vercel&style=for-the-badge)
 

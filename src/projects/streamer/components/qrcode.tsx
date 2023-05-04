@@ -1,10 +1,16 @@
 import { useStore } from "@nanostores/solid";
-import { createEffect, createResource, createSignal, onMount } from "solid-js";
+import {
+  Component,
+  createEffect,
+  createResource,
+  createSignal,
+  onMount,
+} from "solid-js";
 import { Show } from "solid-js/web";
-import { localConnectionId } from "../nano.store";
-import { targetConnectionId } from "../nano.store";
+import { localConnectionId } from "../shared/stores";
+import { targetConnectionId } from "../shared/stores";
 
-export const Scanner = () => {
+export const Scanner: Component = () => {
   let video!: HTMLVideoElement, canvas!: HTMLCanvasElement;
   const [clicked, setClicked] = createSignal(false);
   const [stream$, setStream] = createSignal<MediaStream | null>(null);

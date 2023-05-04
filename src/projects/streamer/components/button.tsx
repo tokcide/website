@@ -5,9 +5,9 @@ import {
   localConnectionId,
   peerConnection,
   targetConnectionId,
-} from "../nano.store";
-import type { StreamGroup } from "../solid.stores";
-import { setStreams } from "../solid.stores";
+} from "../shared/stores";
+import type { StreamGroup } from "../shared/stores";
+import { setStreams } from "../shared/stores";
 
 export const Connect: Component = () => {
   const peer$ = useStore(peerConnection);

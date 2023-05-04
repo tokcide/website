@@ -1,8 +1,9 @@
 ---
-import BaseLayout from "components/BaseLayout.astro";
-import Main from "projects/streamer/main.astro";
+import BaseLayout from "src/components/BaseLayout.astro";
+
+import Main from "@project/streamer";
 ---
 
-<BaseLayout title="App" config={{ bootstrap: true, bootstrapJs: false }}>
+<BaseLayout title="Streamer" config={{ bootstrap: true, bootstrapJs: false }}>
   <Main />
 </BaseLayout>

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, router } from "server/init";
+import { publicProcedure, router } from "../index";
 
 export default router({
   greeting: publicProcedure
